@@ -1,70 +1,60 @@
 import SwiftUI
 
-// The same ten-question interaction serves both practice and real unlocks.
+// Both entry points share the same typed-answer gate; only the required count differs.
 struct ChallengeView: View {
-    let configuration: MathConfiguration
-    let unlocksApps: Bool
+    let disablingBlocking: Bool
     let complete: (TimeInterval) -> Void
     @Environment(\.dismiss) private var dismiss
     @State private var challenge: Challenge
     @State private var answer = ""
-    @State private var solving = false
-    @State private var started = Date()
+    @State private var started: Date?
     @FocusState private var focused: Bool
 
-    init(configuration: MathConfiguration, unlocksApps: Bool,
+    init(configuration: MathConfiguration, disablingBlocking: Bool,
          complete: @escaping (TimeInterval) -> Void) {
-        self.configuration = configuration
-        self.unlocksApps = unlocksApps
+        self.disablingBlocking = disablingBlocking
         self.complete = complete
-        _challenge = State(initialValue: Challenge(configuration: configuration))
+        _challenge = State(initialValue: Challenge(configuration: configuration,
+                                                   disablingBlocking: disablingBlocking))
     }
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
                 VStack(spacing: 24) {
                     Text("MathGate").font(.system(size: 28, weight: .bold, design: .serif))
-                    if solving {
-                        Text("\(challenge.completed) / 10 correct")
-                            .font(.system(.body, design: .monospaced))
-                        if let problem = challenge.current {
-                            Text(problem.text).font(.system(size: 44, design: .monospaced))
-                                .minimumScaleFactor(0.5).lineLimit(1)
-                                .accessibilityLabel(problem.text)
-                            TextField("answer", text: $answer)
-                                .font(.system(size: 32, design: .monospaced))
-                                .multilineTextAlignment(.center).keyboardType(.numberPad)
-                                .textFieldStyle(.plain).padding(12)
-                                .overlay(Rectangle().stroke(Color.primary, lineWidth: 1))
-                                .focused($focused).accessibilityLabel("Answer")
-                                .autocorrectionDisabled().textInputAutocapitalization(.never)
-                                .task {
-                                    await Task.yield()
-                                    guard !Task.isCancelled, solving else { return }
-                                    focused = true
+                    if disablingBlocking {
+                        Text("Complete this round to turn off blocking for all selected apps.")
+                            .font(.footnote).foregroundStyle(.secondary)
+                    }
+                    Text("\(challenge.completed) / \(challenge.questions.count) correct")
+                        .font(.system(.body, design: .monospaced))
+                    if let problem = challenge.current {
+                        Text(problem.text).font(.system(size: 44, design: .monospaced))
+                            .minimumScaleFactor(0.5).lineLimit(1)
+                            .accessibilityLabel(problem.text)
+                        TextField("answer", text: $answer)
+                            .font(.system(size: 32, design: .monospaced))
+                            .multilineTextAlignment(.center).keyboardType(.numberPad)
+                            .textFieldStyle(.plain).padding(12)
+                            .overlay(Rectangle().stroke(Color.primary, lineWidth: 1))
+                            .focused($focused).accessibilityLabel("Answer")
+                            .autocorrectionDisabled().textInputAutocapitalization(.never)
+                            .task {
+                                if started == nil { started = Date() }
+                                await Task.yield()
+                                guard !Task.isCancelled else { return }
+                                focused = true
+                            }
+                            .onChange(of: answer) { _, value in
+                                guard challenge.submit(value) else { return }
+                                answer = ""
+                                if challenge.isComplete {
+                                    focused = false
+                                    complete(Date().timeIntervalSince(started ?? Date()))
                                 }
-                                .onChange(of: answer) { _, value in
-                                    guard solving, challenge.submit(value) else { return }
-                                    answer = ""
-                                    if challenge.isComplete {
-                                        solving = false; focused = false
-                                        complete(Date().timeIntervalSince(started))
-                                    }
-                                }
-                            Text("Type the answer. Correct answers advance automatically.")
-                                .font(.footnote).foregroundStyle(.secondary)
-                        }
-                    } else {
-                        Text("Ten questions. Typed answers. No distractions.")
-                            .multilineTextAlignment(.center)
-                        Button(unlocksApps ? "solve 10 questions" : "start practice") {
-                            challenge = Challenge(configuration: configuration)
-                            answer = ""; started = Date(); focused = false; solving = true
-                        }
-                        if !unlocksApps {
-                            Text("Practice does not unlock blocked apps.")
-                                .font(.footnote).foregroundStyle(.secondary)
-                        }
+                            }
+                        Text("Type the answer. Correct answers advance automatically.")
+                            .font(.footnote).foregroundStyle(.secondary)
                     }
                     Button("Cancel") { focused = false; dismiss() }
                 }
@@ -77,6 +67,6 @@ struct ChallengeView: View {
         .background(Color(uiColor: .systemBackground))
         .foregroundStyle(.primary)
         .buttonStyle(PlainBoxStyle())
-        .interactiveDismissDisabled(solving)
+        .interactiveDismissDisabled()
     }
 }

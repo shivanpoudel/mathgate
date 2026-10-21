@@ -9,7 +9,7 @@ final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
             backgroundColor: .white,
             icon: nil,
             title: .init(text: "MathGate", color: .black),
-            subtitle: .init(text: "Ten correct answers before \(application.localizedDisplayName ?? "this app").", color: .darkGray),
+            subtitle: .init(text: "Complete your math challenge before \(application.localizedDisplayName ?? "this app").", color: .darkGray),
             primaryButtonLabel: .init(text: "Solve questions", color: .white),
             primaryButtonBackgroundColor: .black,
             secondaryButtonLabel: .init(text: "Not now", color: .darkGray))

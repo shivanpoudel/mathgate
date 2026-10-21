@@ -15,7 +15,7 @@ final class Blocker: ObservableObject {
     let authorized = false
     let enabled = false
     let selectedAppCount = 0
-    var status: String { "Practice now. Set up app blocking when you are ready." }
+    var status: String { "Set up your preferences in Settings." }
     func authorize() async {}
     func enable() {}
     func disable() {}
@@ -35,7 +35,7 @@ final class Blocker: ObservableObject {
         if selection.applicationTokens.isEmpty { return "Choose the apps you want to block." }
         if !enabled { return "Blocking is off." }
         if let unlockUntil, unlockUntil > Date() { return "Access granted." }
-        return "Your selected apps are blocked. Solve ten questions to continue."
+        return "Your selected apps are blocked. Open one to begin its math gate."
     }
     init() { refresh() }
     func refresh() {

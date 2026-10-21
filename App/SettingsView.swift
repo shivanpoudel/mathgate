@@ -5,6 +5,7 @@ import FamilyControls
 
 struct SettingsView: View {
     @ObservedObject var blocker: Blocker
+    let previewGate: (Bool) -> Void
     @EnvironmentObject private var preferences: AppPreferences
     @Environment(\.dismiss) private var dismiss
     @State private var resetMath = false
@@ -60,7 +61,7 @@ struct SettingsView: View {
                                 preferences.settings.math.operations.contains(operation))
                     }
                 } header: { Text("Math content") }
-                footer: { Text("Keep at least one operation enabled. Each round contains 10 questions and uses the settings selected before it starts.") }
+                footer: { Text("Keep at least one operation enabled. Each round uses the settings selected before it starts.") }
 
                 Section {
                     rangeControls("Numbers", key: \.addition)
@@ -74,17 +75,41 @@ struct SettingsView: View {
                 footer: { Text("Division reverses generated multiplication problems, so answers are always whole numbers. Supported numbers: 1–999.") }
 
                 Section("General") {
-                    LabeledContent("Questions per unlock", value: "10")
+                    NavigationLink {
+                        Form {
+                            Picker("Questions per app unlock", selection: $preferences.settings.math.questionCount) {
+                                ForEach(1...100, id: \.self) { count in
+                                    Text("\(count)").tag(count)
+                                }
+                            }
+                            .pickerStyle(.wheel)
+                            Text("Opening a blocked app requires this many correct answers. Turning off all blocking requires five extra questions (\(preferences.settings.math.disableQuestionCount) total).")
+                                .font(.footnote).foregroundStyle(.secondary)
+                        }
+                        .navigationTitle("Questions per unlock")
+                        .navigationBarTitleDisplayMode(.inline)
+                    } label: {
+                        LabeledContent("Questions per unlock", value: "\(preferences.settings.math.questionCount)")
+                    }
+                    LabeledContent("Turn off all blocking", value: "\(preferences.settings.math.disableQuestionCount) questions")
                     LabeledContent("Access window", value: "15 minutes")
                     NavigationLink("How blocking works") {
-                        information("How blocking works", text: "Select apps in Settings and tap Block on the home screen. When you open a blocked app, choose Solve questions. Complete ten correct answers to unlock all selected apps for 15 minutes. Wrong answers stay on the same question; Cancel leaves restrictions in place. Reopening an app during its access window does not require another round. You can block again early or turn blocking off from the home screen. This is a voluntary focus tool; Screen Time access can also be revoked in iOS Settings.")
+                        information("How blocking works", text: "Select apps in Settings and tap Block on the home screen. When you open a blocked app, choose Solve questions. Complete your chosen number of correct answers to open a 15-minute access window for selected apps. Wrong answers stay on the same question; Cancel leaves restrictions in place. Reopening an app during its access window does not require another round. You can block again early. Tap Unblock on the home screen and complete five extra questions to turn blocking off for all selected apps until you enable it again. Cancelling that round keeps blocking enabled. This is a voluntary focus tool; Screen Time access can also be revoked in iOS Settings.")
                     }
                     NavigationLink("Privacy & about") {
-                        information("Privacy & about", text: "MathGate generates arithmetic on your device. No account, server, advertising, analytics, or ML model is used. Appearance and math choices are saved locally. The blocking build also stores selected app tokens and access-window state in a local App Group shared with its extensions. Practice results are displayed for the current session, not kept as a history. MathGate is an independent project inspired by arithmetic speed drills, not affiliated with Zetamac.")
+                        information("Privacy & about", text: "MathGate generates arithmetic on your device. No account, server, advertising, analytics, or ML model is used. Appearance and math choices are saved locally. The blocking build also stores selected app tokens and access-window state in a local App Group shared with its extensions. Challenge results are not kept as a history. MathGate is an independent project inspired by arithmetic speed drills, not affiliated with Zetamac.")
                     }
                     LabeledContent("Version", value: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0")
                     Button("Reset math settings", role: .destructive) { resetMath = true }
                 }
+                #if PRACTICE
+                Section("Development preview") {
+                    Button("Preview app-opening gate") { previewGate(false) }
+                    Button("Preview Unblock gate") { previewGate(true) }
+                    Text("Simulates arriving from a blocked app. This build cannot block or unlock other apps.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                }
+                #endif
             }
             .navigationTitle("Settings").navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -93,7 +118,7 @@ struct SettingsView: View {
             .alert("Reset math settings?", isPresented: $resetMath) {
                 Button("Reset", role: .destructive) { preferences.resetMath() }
                 Button("Cancel", role: .cancel) {}
-            } message: { Text("Restore all four operations and the original number ranges. Appearance and blocked apps stay as they are.") }
+            } message: { Text("Restore 10 questions per app unlock, all four operations, and the original number ranges. Appearance and blocked apps stay as they are.") }
             #if !PRACTICE
             .sheet(isPresented: $showPicker) {
                 NavigationStack {

@@ -118,3 +118,47 @@ final class MathConfigurationTests: XCTestCase {
         XCTAssertTrue(Challenge(configuration: config).questions.allSatisfy { $0.operation == .divide })
     }
 }
+
+final class GateCountTests: XCTestCase {
+    func testCustomCountAndExtraQuestionsMustAllBeCompleted() {
+        for count in [1, 10, 23, 100] {
+            var config = MathConfiguration()
+            config.questionCount = count
+            for disabling in [false, true] {
+                var challenge = Challenge(configuration: config, disablingBlocking: disabling)
+                let expected = count + (disabling ? 5 : 0)
+                XCTAssertEqual(challenge.questions.count, expected)
+                for _ in 0..<expected {
+                    XCTAssertFalse(challenge.isComplete)
+                    XCTAssertFalse(challenge.submit("incorrect"))
+                    XCTAssertTrue(challenge.submit(String(challenge.current!.answer)))
+                }
+                XCTAssertTrue(challenge.isComplete)
+                XCTAssertNil(challenge.current)
+            }
+        }
+    }
+    func testLegacyPreferencesKeepMathChoicesAndDefaultToTen() throws {
+        let json = #"{"operations":["+"],"addition":{"lower":7,"upper":9},"firstFactor":{"lower":3,"upper":4},"secondFactor":{"lower":5,"upper":6}}"#
+        let config = try JSONDecoder().decode(MathConfiguration.self, from: Data(json.utf8))
+        XCTAssertEqual(config.questionCount, 10)
+        XCTAssertEqual(config.disableQuestionCount, 15)
+        XCTAssertEqual(config.operations, [.add])
+        XCTAssertEqual(config.addition, NumberRange(lower: 7, upper: 9))
+        XCTAssertEqual(config.firstFactor, NumberRange(lower: 3, upper: 4))
+        XCTAssertEqual(config.secondFactor, NumberRange(lower: 5, upper: 6))
+    }
+    func testCountsAreBoundedAndPersist() throws {
+        var config = MathConfiguration()
+        config.questionCount = Int.min
+        XCTAssertEqual(Challenge(configuration: config).questions.count, 1)
+        config.questionCount = Int.max
+        XCTAssertEqual(Challenge(configuration: config, disablingBlocking: true).questions.count, 105)
+        config.questionCount = 27
+        let data = try JSONEncoder().encode(config)
+        XCTAssertEqual(try JSONDecoder().decode(MathConfiguration.self, from: data).questionCount, 27)
+        let challenge = Challenge(configuration: config)
+        config.questionCount = 3
+        XCTAssertEqual(challenge.questions.count, 27)
+    }
+}

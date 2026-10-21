@@ -3,7 +3,8 @@ import Combine
 
 struct ChallengeSession: Identifiable {
     let id = UUID()
-    let unlocksApps: Bool
+    enum Purpose { case appAccess, disableBlocking, preview, previewDisable }
+    let purpose: Purpose
     let configuration: MathConfiguration
 }
 
@@ -13,7 +14,7 @@ struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var showSettings = false
     @State private var showPreviewNotice = false
-    @State private var confirmDisable = false
+    @State private var previewRequested: ChallengeSession.Purpose?
     @State private var busy = false
     @State private var session: ChallengeSession?
     @State private var message = ""
@@ -24,8 +25,7 @@ struct ContentView: View {
     }
     private var buttonTitle: String {
         if busy { return "Please wait" }
-        if accessActive { return "Block again" }
-        return blocker.enabled ? "Blocked" : "Block"
+        return blocker.enabled ? "Unblock" : "Block"
     }
     var body: some View {
         NavigationStack {
@@ -48,18 +48,14 @@ struct ContentView: View {
                         }
                         .buttonStyle(.plain).disabled(busy)
                         .accessibilityLabel(buttonTitle)
-                        .accessibilityHint(blocker.enabled && !accessActive
-                            ? "Opens the option to turn blocking off" : "Turns on app blocking")
+                        .accessibilityHint(blocker.enabled
+                            ? "Complete extra questions to turn blocking off" : "Turns on app blocking")
                         if let end = blocker.unlockUntil, accessActive {
                             Text("Access until \(end.formatted(date: .omitted, time: .shortened))")
                                 .font(.footnote)
-                        }
-                        if blocker.enabled && !accessActive && blocker.canStart {
-                            Button("Solve to unlock") { start(unlocksApps: true) }
+                            Button("Block again") { blocker.lockNow(); message = "" }
                                 .buttonStyle(PlainBoxStyle())
                         }
-                        Button("Practice math") { start(unlocksApps: false) }
-                            .buttonStyle(PlainBoxStyle())
                         if !message.isEmpty { Text(message).multilineTextAlignment(.center) }
                         if !blocker.error.isEmpty {
                             Text(blocker.error).foregroundStyle(.red).multilineTextAlignment(.center)
@@ -69,7 +65,7 @@ struct ContentView: View {
                                 .font(.footnote).foregroundStyle(.secondary)
                                 .multilineTextAlignment(.center)
                         } else {
-                            Text("10 correct answers · 15 minutes of access")
+                            Text("\(preferences.settings.math.questionCount) correct answers · 15 minutes of access")
                                 .font(.footnote).foregroundStyle(.secondary)
                         }
                     }
@@ -90,16 +86,26 @@ struct ContentView: View {
             .toolbarBackground(.hidden, for: .navigationBar)
         }
         .tint(.primary)
-        .sheet(isPresented: $showSettings, onDismiss: consumeShieldRequest) {
-            SettingsView(blocker: blocker)
+        .sheet(isPresented: $showSettings, onDismiss: settingsDismissed) {
+            SettingsView(blocker: blocker, previewGate: { disabling in
+                previewRequested = disabling ? .previewDisable : .preview
+                showSettings = false
+            })
                 .environmentObject(preferences)
                 .preferredColorScheme(preferences.settings.appearance.colorScheme)
         }
         .fullScreenCover(item: $session, onDismiss: consumeShieldRequest) { current in
-            ChallengeView(configuration: current.configuration, unlocksApps: current.unlocksApps) { elapsed in
-                if current.unlocksApps {
+            ChallengeView(configuration: current.configuration,
+                          disablingBlocking: current.purpose == .disableBlocking || current.purpose == .previewDisable) { _ in
+                switch current.purpose {
+                case .appAccess:
                     message = blocker.grant() ? "Complete. Return to your app to use the access window." : ""
-                } else { message = String(format: "10 correct in %.1f seconds.", elapsed) }
+                case .disableBlocking:
+                    blocker.disable()
+                    message = "Blocking is off. All selected apps are available."
+                case .preview, .previewDisable:
+                    message = "Gate preview complete. No apps were unlocked."
+                }
                 session = nil
             }
             .preferredColorScheme(preferences.settings.appearance.colorScheme)
@@ -107,12 +113,8 @@ struct ContentView: View {
         .alert("Preview build", isPresented: $showPreviewNotice) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text("You can try settings and practice here. Blocking other apps needs the full MathGate build with Screen Time access on an iPhone.")
+            Text("You can preview the app-opening gate in Settings here. Blocking other apps needs the full MathGate build with Screen Time access on an iPhone.")
         }
-        .confirmationDialog("Turn off blocking?", isPresented: $confirmDisable, titleVisibility: .visible) {
-            Button("Turn off blocking", role: .destructive) { blocker.disable(); message = "" }
-            Button("Cancel", role: .cancel) {}
-        } message: { Text("Your selected apps will be available without completing a challenge.") }
         .task { blocker.refresh(); consumeShieldRequest() }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { blocker.refresh(); consumeShieldRequest() }
@@ -121,15 +123,14 @@ struct ContentView: View {
             if let expiry = blocker.unlockUntil, expiry <= now { blocker.refresh() }
         }
     }
-    private func start(unlocksApps: Bool) {
+    private func start(_ purpose: ChallengeSession.Purpose) {
         message = ""
-        session = ChallengeSession(unlocksApps: unlocksApps, configuration: preferences.settings.math)
+        session = ChallengeSession(purpose: purpose, configuration: preferences.settings.math)
     }
     private func handleBlockButton() {
         message = ""
         if blocker.isPractice { showPreviewNotice = true; return }
-        if accessActive { blocker.lockNow(); return }
-        if blocker.enabled { confirmDisable = true; return }
+        if blocker.enabled { start(.disableBlocking); return }
         busy = true
         Task { @MainActor in
             defer { busy = false }
@@ -139,12 +140,18 @@ struct ContentView: View {
             else { blocker.enable() }
         }
     }
+    private func settingsDismissed() {
+        if let purpose = previewRequested {
+            previewRequested = nil
+            start(purpose)
+        } else { consumeShieldRequest() }
+    }
     private func consumeShieldRequest() {
         #if !PRACTICE
         guard !showSettings, session == nil, GateState.challengeRequested else { return }
         GateState.challengeRequested = false
         blocker.refresh()
-        if blocker.canStart && !accessActive { start(unlocksApps: true) }
+        if blocker.canStart && !accessActive { start(.appAccess) }
         #endif
     }
 }

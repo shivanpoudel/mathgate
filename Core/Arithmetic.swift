@@ -11,12 +11,27 @@ struct NumberRange: Codable, Equatable {
 }
 
 struct MathConfiguration: Codable, Equatable {
+    var questionCount = 10
+    var disableQuestionCount: Int { normalized.questionCount + 5 }
     var operations = Set(Problem.Operation.allCases)
     var addition = NumberRange(lower: 2, upper: 100)
     var firstFactor = NumberRange(lower: 2, upper: 12)
     var secondFactor = NumberRange(lower: 2, upper: 100)
+    init() {}
+    private enum CodingKeys: String, CodingKey {
+        case questionCount, operations, addition, firstFactor, secondFactor
+    }
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        questionCount = try values.decodeIfPresent(Int.self, forKey: .questionCount) ?? 10
+        operations = try values.decodeIfPresent(Set<Problem.Operation>.self, forKey: .operations) ?? Set(Problem.Operation.allCases)
+        addition = try values.decodeIfPresent(NumberRange.self, forKey: .addition) ?? NumberRange(lower: 2, upper: 100)
+        firstFactor = try values.decodeIfPresent(NumberRange.self, forKey: .firstFactor) ?? NumberRange(lower: 2, upper: 12)
+        secondFactor = try values.decodeIfPresent(NumberRange.self, forKey: .secondFactor) ?? NumberRange(lower: 2, upper: 100)
+    }
     var normalized: MathConfiguration {
         var result = self
+        result.questionCount = min(max(questionCount, 1), 100)
         if result.operations.isEmpty { result.operations = Set(Problem.Operation.allCases) }
         result.addition = addition.normalized
         result.firstFactor = firstFactor.normalized
@@ -72,15 +87,15 @@ struct Problem: Equatable {
 }
 
 struct Challenge {
-    static let questionCount = 10
     let questions: [Problem]
     private(set) var completed = 0
     var isComplete: Bool { completed == questions.count }
     var current: Problem? { isComplete ? nil : questions[completed] }
-    init(configuration: MathConfiguration = MathConfiguration()) {
+    init(configuration: MathConfiguration = MathConfiguration(), disablingBlocking: Bool = false) {
         var rng = SystemRandomNumberGenerator()
         var items: [Problem] = []
-        for _ in 0..<Self.questionCount {
+        let count = disablingBlocking ? configuration.disableQuestionCount : configuration.normalized.questionCount
+        for _ in 0..<count {
             var item = Problem.random(configuration: configuration, using: &rng)
             // Bounded retries: a single possible problem must never hang the app.
             for _ in 0..<8 {

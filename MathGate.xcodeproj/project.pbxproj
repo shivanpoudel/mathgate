@@ -1,0 +1,946 @@
+// !$*UTF8*$!
+{
+	"archiveVersion" = 1;
+	"classes" = {
+	};
+	"objectVersion" = 56;
+	"objects" = {
+		"DFAA9A79675E5B61B48843E5" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = ".gitignore";
+			"sourceTree" = "<group>";
+		};
+		"3FA44B61A6213461EB95C26A" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.xml";
+			"path" = "Action/Info.plist";
+			"sourceTree" = "<group>";
+		};
+		"6AFA6D9E8147A2E85381A4E3" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.entitlements";
+			"path" = "Action/MathGate.entitlements";
+			"sourceTree" = "<group>";
+		};
+		"7764D6077376280C922921C3" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Action/ShieldActionExtension.swift";
+			"sourceTree" = "<group>";
+		};
+		"03388B1BF4410698E893346C" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "App/Blocker.swift";
+			"sourceTree" = "<group>";
+		};
+		"CA7C55708D5974AE116887EC" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "App/ContentView.swift";
+			"sourceTree" = "<group>";
+		};
+		"E72C32ECCE2BE0CA6A96801B" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.entitlements";
+			"path" = "App/MathGate.entitlements";
+			"sourceTree" = "<group>";
+		};
+		"A489542C351C86CE0F5A9F0D" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "App/MathGateApp.swift";
+			"sourceTree" = "<group>";
+		};
+		"2AA3635DB49A4D9959C2B768" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Core/Arithmetic.swift";
+			"sourceTree" = "<group>";
+		};
+		"973FDCA46260503B579A5C81" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Monitor/ActivityMonitor.swift";
+			"sourceTree" = "<group>";
+		};
+		"02D9C1D9C43FDC53250D2577" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.xml";
+			"path" = "Monitor/Info.plist";
+			"sourceTree" = "<group>";
+		};
+		"6C370538F3B93B4D1066811E" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.entitlements";
+			"path" = "Monitor/MathGate.entitlements";
+			"sourceTree" = "<group>";
+		};
+		"BA42E1472EB2BDE594C4A014" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Package.swift";
+			"sourceTree" = "<group>";
+		};
+		"42C59AF8A4BAE559BC5A5D5D" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "net.daringfireball.markdown";
+			"path" = "README.md";
+			"sourceTree" = "<group>";
+		};
+		"D89A0983A1E3502A4075F278" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Shared/GateState.swift";
+			"sourceTree" = "<group>";
+		};
+		"E2EE05CDAE571EF63F97CFF8" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.xml";
+			"path" = "Shield/Info.plist";
+			"sourceTree" = "<group>";
+		};
+		"8E75FE94466EAD5AD669D9F6" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.entitlements";
+			"path" = "Shield/MathGate.entitlements";
+			"sourceTree" = "<group>";
+		};
+		"0E29F6BF63C9D738E7B91640" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Shield/ShieldConfigurationExtension.swift";
+			"sourceTree" = "<group>";
+		};
+		"0A8C37537F58DC7DFE0A30AA" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Tests/ArithmeticTests.swift";
+			"sourceTree" = "<group>";
+		};
+		"A2E7CB1777D7494C925448F3" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.script.python";
+			"path" = "scripts/generate_project.py";
+			"sourceTree" = "<group>";
+		};
+		"3FA504A6E052DDAD2B08C3EB" = {
+			"isa" = "PBXFileReference";
+			"explicitFileType" = "wrapper.application";
+			"includeInIndex" = 0;
+			"path" = "MathGate.app";
+			"sourceTree" = "BUILT_PRODUCTS_DIR";
+		};
+		"00E8B883979AC60EE70994FB" = {
+			"isa" = "PBXFileReference";
+			"explicitFileType" = "wrapper.application";
+			"includeInIndex" = 0;
+			"path" = "MathGatePractice.app";
+			"sourceTree" = "BUILT_PRODUCTS_DIR";
+		};
+		"4B43F8E68EEE6A4FFEB641B1" = {
+			"isa" = "PBXFileReference";
+			"explicitFileType" = "wrapper.app-extension";
+			"includeInIndex" = 0;
+			"path" = "MathGateMonitor.appex";
+			"sourceTree" = "BUILT_PRODUCTS_DIR";
+		};
+		"44A73360EB884EC6A7E88172" = {
+			"isa" = "PBXFileReference";
+			"explicitFileType" = "wrapper.app-extension";
+			"includeInIndex" = 0;
+			"path" = "MathGateShield.appex";
+			"sourceTree" = "BUILT_PRODUCTS_DIR";
+		};
+		"38FDCFDACC1F9681D23539D1" = {
+			"isa" = "PBXFileReference";
+			"explicitFileType" = "wrapper.app-extension";
+			"includeInIndex" = 0;
+			"path" = "MathGateAction.appex";
+			"sourceTree" = "BUILT_PRODUCTS_DIR";
+		};
+		"0A3E27B8CA818264D75C8D81" = {
+			"isa" = "PBXGroup";
+			"children" = (
+				"3FA504A6E052DDAD2B08C3EB",
+				"00E8B883979AC60EE70994FB",
+				"4B43F8E68EEE6A4FFEB641B1",
+				"44A73360EB884EC6A7E88172",
+				"38FDCFDACC1F9681D23539D1",
+			);
+			"name" = "Products";
+			"sourceTree" = "<group>";
+		};
+		"0D6E4079E36703EBD37C0072" = {
+			"isa" = "PBXGroup";
+			"children" = (
+				"DFAA9A79675E5B61B48843E5",
+				"3FA44B61A6213461EB95C26A",
+				"6AFA6D9E8147A2E85381A4E3",
+				"7764D6077376280C922921C3",
+				"03388B1BF4410698E893346C",
+				"CA7C55708D5974AE116887EC",
+				"E72C32ECCE2BE0CA6A96801B",
+				"A489542C351C86CE0F5A9F0D",
+				"2AA3635DB49A4D9959C2B768",
+				"973FDCA46260503B579A5C81",
+				"02D9C1D9C43FDC53250D2577",
+				"6C370538F3B93B4D1066811E",
+				"BA42E1472EB2BDE594C4A014",
+				"42C59AF8A4BAE559BC5A5D5D",
+				"D89A0983A1E3502A4075F278",
+				"E2EE05CDAE571EF63F97CFF8",
+				"8E75FE94466EAD5AD669D9F6",
+				"0E29F6BF63C9D738E7B91640",
+				"0A8C37537F58DC7DFE0A30AA",
+				"A2E7CB1777D7494C925448F3",
+				"0A3E27B8CA818264D75C8D81",
+			);
+			"sourceTree" = "<group>";
+		};
+		"240887D9982465580AF0F553" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "2AA3635DB49A4D9959C2B768";
+		};
+		"52DC0B3252F8EC6894476E93" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "A489542C351C86CE0F5A9F0D";
+		};
+		"333D8B951CAD28441687C274" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "CA7C55708D5974AE116887EC";
+		};
+		"92AFC14E065B7A893E060F53" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "03388B1BF4410698E893346C";
+		};
+		"2BF99C24A9325DF284136D5D" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "D89A0983A1E3502A4075F278";
+		};
+		"348047A93EC912E20851A96E" = {
+			"isa" = "PBXSourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+				"240887D9982465580AF0F553",
+				"52DC0B3252F8EC6894476E93",
+				"333D8B951CAD28441687C274",
+				"92AFC14E065B7A893E060F53",
+				"2BF99C24A9325DF284136D5D",
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"E168FA9353C67A80F5971A43" = {
+			"isa" = "PBXFrameworksBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"C9A8D0FD151375CDED7CB151" = {
+			"isa" = "PBXResourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"05F5A321EDFA176A8ABFD9F2" = {
+			"isa" = "PBXContainerItemProxy";
+			"containerPortal" = "244210E48437B6556980A702";
+			"proxyType" = 1;
+			"remoteGlobalIDString" = "F4920FB4AC0E87689EE8A568";
+			"remoteInfo" = "MathGateMonitor";
+		};
+		"38698FB54CF4AF101F2D19DD" = {
+			"isa" = "PBXTargetDependency";
+			"target" = "F4920FB4AC0E87689EE8A568";
+			"targetProxy" = "05F5A321EDFA176A8ABFD9F2";
+		};
+		"85E192F535258F0688DCCF2E" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "4B43F8E68EEE6A4FFEB641B1";
+			"settings" = {
+				"ATTRIBUTES" = (
+					"RemoveHeadersOnCopy",
+				);
+			};
+		};
+		"9B011EAB866C61752DE5C99E" = {
+			"isa" = "PBXContainerItemProxy";
+			"containerPortal" = "244210E48437B6556980A702";
+			"proxyType" = 1;
+			"remoteGlobalIDString" = "2A002E0A953A26A48F7A1E05";
+			"remoteInfo" = "MathGateShield";
+		};
+		"E4ACB15BD396FBC7865210C7" = {
+			"isa" = "PBXTargetDependency";
+			"target" = "2A002E0A953A26A48F7A1E05";
+			"targetProxy" = "9B011EAB866C61752DE5C99E";
+		};
+		"6C1146ED83DD221B809C4FB4" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "44A73360EB884EC6A7E88172";
+			"settings" = {
+				"ATTRIBUTES" = (
+					"RemoveHeadersOnCopy",
+				);
+			};
+		};
+		"B1CF9ACE1FA95334ED29B896" = {
+			"isa" = "PBXContainerItemProxy";
+			"containerPortal" = "244210E48437B6556980A702";
+			"proxyType" = 1;
+			"remoteGlobalIDString" = "53E9D4DFC252EC4374E62727";
+			"remoteInfo" = "MathGateAction";
+		};
+		"E4E77072EE43EFB3E1081444" = {
+			"isa" = "PBXTargetDependency";
+			"target" = "53E9D4DFC252EC4374E62727";
+			"targetProxy" = "B1CF9ACE1FA95334ED29B896";
+		};
+		"6D7A1F3C963DC3C1C8880AD2" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "38FDCFDACC1F9681D23539D1";
+			"settings" = {
+				"ATTRIBUTES" = (
+					"RemoveHeadersOnCopy",
+				);
+			};
+		};
+		"8A1EED22144C3F04485A69EE" = {
+			"isa" = "PBXCopyFilesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"dstPath" = "";
+			"dstSubfolderSpec" = 13;
+			"files" = (
+				"85E192F535258F0688DCCF2E",
+				"6C1146ED83DD221B809C4FB4",
+				"6D7A1F3C963DC3C1C8880AD2",
+			);
+			"name" = "Embed App Extensions";
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"E71AECB311082FA0F630346E" = {
+			"isa" = "XCBuildConfiguration";
+			"name" = "Debug";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.shivanpoudel.mathgate";
+				"SWIFT_VERSION" = "5.0";
+				"CODE_SIGN_STYLE" = "Automatic";
+				"TARGETED_DEVICE_FAMILY" = "1";
+				"SDKROOT" = "iphoneos";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"IPHONEOS_DEPLOYMENT_TARGET" = "26.5";
+				"MARKETING_VERSION" = "1.0";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"CODE_SIGN_ENTITLEMENTS" = "App/MathGate.entitlements";
+				"GENERATE_INFOPLIST_FILE" = "YES";
+				"INFOPLIST_KEY_CFBundleDisplayName" = "Arithmetic Gate";
+				"INFOPLIST_KEY_UILaunchScreen_Generation" = "YES";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation" = "YES";
+				"INFOPLIST_KEY_UISupportedInterfaceOrientations" = "UIInterfaceOrientationPortrait";
+				"INFOPLIST_KEY_UIUserInterfaceStyle" = "Light";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf";
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = " DEBUG";
+			};
+		};
+		"04B8FF979812828C5715C815" = {
+			"isa" = "XCBuildConfiguration";
+			"name" = "Release";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.shivanpoudel.mathgate";
+				"SWIFT_VERSION" = "5.0";
+				"CODE_SIGN_STYLE" = "Automatic";
+				"TARGETED_DEVICE_FAMILY" = "1";
+				"SDKROOT" = "iphoneos";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"IPHONEOS_DEPLOYMENT_TARGET" = "26.5";
+				"MARKETING_VERSION" = "1.0";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"CODE_SIGN_ENTITLEMENTS" = "App/MathGate.entitlements";
+				"GENERATE_INFOPLIST_FILE" = "YES";
+				"INFOPLIST_KEY_CFBundleDisplayName" = "Arithmetic Gate";
+				"INFOPLIST_KEY_UILaunchScreen_Generation" = "YES";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation" = "YES";
+				"INFOPLIST_KEY_UISupportedInterfaceOrientations" = "UIInterfaceOrientationPortrait";
+				"INFOPLIST_KEY_UIUserInterfaceStyle" = "Light";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+			};
+		};
+		"374727DD9567CE64BFF9C45F" = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = (
+				"E71AECB311082FA0F630346E",
+				"04B8FF979812828C5715C815",
+			);
+			"defaultConfigurationIsVisible" = 0;
+			"defaultConfigurationName" = "Release";
+		};
+		"A927FDC054A947F139A7F4A3" = {
+			"isa" = "PBXNativeTarget";
+			"buildConfigurationList" = "374727DD9567CE64BFF9C45F";
+			"buildPhases" = (
+				"348047A93EC912E20851A96E",
+				"E168FA9353C67A80F5971A43",
+				"C9A8D0FD151375CDED7CB151",
+				"8A1EED22144C3F04485A69EE",
+			);
+			"buildRules" = (
+			);
+			"dependencies" = (
+				"38698FB54CF4AF101F2D19DD",
+				"E4ACB15BD396FBC7865210C7",
+				"E4E77072EE43EFB3E1081444",
+			);
+			"name" = "MathGate";
+			"productName" = "MathGate";
+			"productReference" = "3FA504A6E052DDAD2B08C3EB";
+			"productType" = "com.apple.product-type.application";
+		};
+		"40E7B0E8FB83BD026CD40EED" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "2AA3635DB49A4D9959C2B768";
+		};
+		"CE327C1A8DCBBF69F8CB5DDD" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "A489542C351C86CE0F5A9F0D";
+		};
+		"35F1EAC9AB9A9E848AA22B9A" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "CA7C55708D5974AE116887EC";
+		};
+		"035D458A87E849E6F1C698DC" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "03388B1BF4410698E893346C";
+		};
+		"0AB083C919B5955BE86C3579" = {
+			"isa" = "PBXSourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+				"40E7B0E8FB83BD026CD40EED",
+				"CE327C1A8DCBBF69F8CB5DDD",
+				"35F1EAC9AB9A9E848AA22B9A",
+				"035D458A87E849E6F1C698DC",
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"5287485D51863E1CA9236FF9" = {
+			"isa" = "PBXFrameworksBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"08DA62EC2566B00E5D221CCE" = {
+			"isa" = "PBXResourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"5C6C7AEE34D6AD156274C6C3" = {
+			"isa" = "XCBuildConfiguration";
+			"name" = "Debug";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.shivanpoudel.mathgate.practice";
+				"SWIFT_VERSION" = "5.0";
+				"CODE_SIGN_STYLE" = "Automatic";
+				"TARGETED_DEVICE_FAMILY" = "1";
+				"SDKROOT" = "iphoneos";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"IPHONEOS_DEPLOYMENT_TARGET" = "17.0";
+				"MARKETING_VERSION" = "1.0";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = "PRACTICE DEBUG";
+				"GENERATE_INFOPLIST_FILE" = "YES";
+				"INFOPLIST_KEY_CFBundleDisplayName" = "Arithmetic Practice";
+				"INFOPLIST_KEY_UILaunchScreen_Generation" = "YES";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation" = "YES";
+				"INFOPLIST_KEY_UISupportedInterfaceOrientations" = "UIInterfaceOrientationPortrait";
+				"INFOPLIST_KEY_UIUserInterfaceStyle" = "Light";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf";
+			};
+		};
+		"138762F15669062E1CF086D9" = {
+			"isa" = "XCBuildConfiguration";
+			"name" = "Release";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.shivanpoudel.mathgate.practice";
+				"SWIFT_VERSION" = "5.0";
+				"CODE_SIGN_STYLE" = "Automatic";
+				"TARGETED_DEVICE_FAMILY" = "1";
+				"SDKROOT" = "iphoneos";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"IPHONEOS_DEPLOYMENT_TARGET" = "17.0";
+				"MARKETING_VERSION" = "1.0";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = "PRACTICE";
+				"GENERATE_INFOPLIST_FILE" = "YES";
+				"INFOPLIST_KEY_CFBundleDisplayName" = "Arithmetic Practice";
+				"INFOPLIST_KEY_UILaunchScreen_Generation" = "YES";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation" = "YES";
+				"INFOPLIST_KEY_UISupportedInterfaceOrientations" = "UIInterfaceOrientationPortrait";
+				"INFOPLIST_KEY_UIUserInterfaceStyle" = "Light";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+			};
+		};
+		"86D3650111513FDA0ECEDFA2" = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = (
+				"5C6C7AEE34D6AD156274C6C3",
+				"138762F15669062E1CF086D9",
+			);
+			"defaultConfigurationIsVisible" = 0;
+			"defaultConfigurationName" = "Release";
+		};
+		"4566F7159AE567A1494CA700" = {
+			"isa" = "PBXNativeTarget";
+			"buildConfigurationList" = "86D3650111513FDA0ECEDFA2";
+			"buildPhases" = (
+				"0AB083C919B5955BE86C3579",
+				"5287485D51863E1CA9236FF9",
+				"08DA62EC2566B00E5D221CCE",
+			);
+			"buildRules" = (
+			);
+			"dependencies" = (
+			);
+			"name" = "MathGatePractice";
+			"productName" = "MathGatePractice";
+			"productReference" = "00E8B883979AC60EE70994FB";
+			"productType" = "com.apple.product-type.application";
+		};
+		"9F827156A0D435CB516D88FD" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "973FDCA46260503B579A5C81";
+		};
+		"ADE9F4E3B8B04C006A9762DC" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "D89A0983A1E3502A4075F278";
+		};
+		"C760F48A74E733EE4AD4CBD2" = {
+			"isa" = "PBXSourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+				"9F827156A0D435CB516D88FD",
+				"ADE9F4E3B8B04C006A9762DC",
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"B4CBD17E03B321C909D7987E" = {
+			"isa" = "PBXFrameworksBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"CD3C840E469029F674EC7A85" = {
+			"isa" = "PBXResourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"3ECA6DE88C62BF173591AA14" = {
+			"isa" = "XCBuildConfiguration";
+			"name" = "Debug";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.shivanpoudel.mathgate.monitor";
+				"SWIFT_VERSION" = "5.0";
+				"CODE_SIGN_STYLE" = "Automatic";
+				"TARGETED_DEVICE_FAMILY" = "1";
+				"SDKROOT" = "iphoneos";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"IPHONEOS_DEPLOYMENT_TARGET" = "26.5";
+				"MARKETING_VERSION" = "1.0";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"CODE_SIGN_ENTITLEMENTS" = "Monitor/MathGate.entitlements";
+				"INFOPLIST_FILE" = "Monitor/Info.plist";
+				"APPLICATION_EXTENSION_API_ONLY" = "YES";
+				"SKIP_INSTALL" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf";
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = " DEBUG";
+			};
+		};
+		"EFC8C2BF08C1084C0DF23147" = {
+			"isa" = "XCBuildConfiguration";
+			"name" = "Release";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.shivanpoudel.mathgate.monitor";
+				"SWIFT_VERSION" = "5.0";
+				"CODE_SIGN_STYLE" = "Automatic";
+				"TARGETED_DEVICE_FAMILY" = "1";
+				"SDKROOT" = "iphoneos";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"IPHONEOS_DEPLOYMENT_TARGET" = "26.5";
+				"MARKETING_VERSION" = "1.0";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"CODE_SIGN_ENTITLEMENTS" = "Monitor/MathGate.entitlements";
+				"INFOPLIST_FILE" = "Monitor/Info.plist";
+				"APPLICATION_EXTENSION_API_ONLY" = "YES";
+				"SKIP_INSTALL" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+			};
+		};
+		"0E4D2CF13B4C30030A112A88" = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = (
+				"3ECA6DE88C62BF173591AA14",
+				"EFC8C2BF08C1084C0DF23147",
+			);
+			"defaultConfigurationIsVisible" = 0;
+			"defaultConfigurationName" = "Release";
+		};
+		"F4920FB4AC0E87689EE8A568" = {
+			"isa" = "PBXNativeTarget";
+			"buildConfigurationList" = "0E4D2CF13B4C30030A112A88";
+			"buildPhases" = (
+				"C760F48A74E733EE4AD4CBD2",
+				"B4CBD17E03B321C909D7987E",
+				"CD3C840E469029F674EC7A85",
+			);
+			"buildRules" = (
+			);
+			"dependencies" = (
+			);
+			"name" = "MathGateMonitor";
+			"productName" = "MathGateMonitor";
+			"productReference" = "4B43F8E68EEE6A4FFEB641B1";
+			"productType" = "com.apple.product-type.app-extension";
+		};
+		"1F7CA0EDB275C2BC24D89018" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "0E29F6BF63C9D738E7B91640";
+		};
+		"3E6A7888B81CA77239A7A7B9" = {
+			"isa" = "PBXSourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+				"1F7CA0EDB275C2BC24D89018",
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"BBC8096599AF256AB5F9BAE5" = {
+			"isa" = "PBXFrameworksBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"2617E7E5612964EAFAD49CC3" = {
+			"isa" = "PBXResourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"A379B790CC8F09BF95D9871E" = {
+			"isa" = "XCBuildConfiguration";
+			"name" = "Debug";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.shivanpoudel.mathgate.shield";
+				"SWIFT_VERSION" = "5.0";
+				"CODE_SIGN_STYLE" = "Automatic";
+				"TARGETED_DEVICE_FAMILY" = "1";
+				"SDKROOT" = "iphoneos";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"IPHONEOS_DEPLOYMENT_TARGET" = "26.5";
+				"MARKETING_VERSION" = "1.0";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"CODE_SIGN_ENTITLEMENTS" = "Shield/MathGate.entitlements";
+				"INFOPLIST_FILE" = "Shield/Info.plist";
+				"APPLICATION_EXTENSION_API_ONLY" = "YES";
+				"SKIP_INSTALL" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf";
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = " DEBUG";
+			};
+		};
+		"BFCF8D115EA7EE4989F950F2" = {
+			"isa" = "XCBuildConfiguration";
+			"name" = "Release";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.shivanpoudel.mathgate.shield";
+				"SWIFT_VERSION" = "5.0";
+				"CODE_SIGN_STYLE" = "Automatic";
+				"TARGETED_DEVICE_FAMILY" = "1";
+				"SDKROOT" = "iphoneos";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"IPHONEOS_DEPLOYMENT_TARGET" = "26.5";
+				"MARKETING_VERSION" = "1.0";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"CODE_SIGN_ENTITLEMENTS" = "Shield/MathGate.entitlements";
+				"INFOPLIST_FILE" = "Shield/Info.plist";
+				"APPLICATION_EXTENSION_API_ONLY" = "YES";
+				"SKIP_INSTALL" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+			};
+		};
+		"2AB99F7D69342CF5F1B12843" = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = (
+				"A379B790CC8F09BF95D9871E",
+				"BFCF8D115EA7EE4989F950F2",
+			);
+			"defaultConfigurationIsVisible" = 0;
+			"defaultConfigurationName" = "Release";
+		};
+		"2A002E0A953A26A48F7A1E05" = {
+			"isa" = "PBXNativeTarget";
+			"buildConfigurationList" = "2AB99F7D69342CF5F1B12843";
+			"buildPhases" = (
+				"3E6A7888B81CA77239A7A7B9",
+				"BBC8096599AF256AB5F9BAE5",
+				"2617E7E5612964EAFAD49CC3",
+			);
+			"buildRules" = (
+			);
+			"dependencies" = (
+			);
+			"name" = "MathGateShield";
+			"productName" = "MathGateShield";
+			"productReference" = "44A73360EB884EC6A7E88172";
+			"productType" = "com.apple.product-type.app-extension";
+		};
+		"A801237869241A8E27238896" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "7764D6077376280C922921C3";
+		};
+		"2391F80D5A75275CB42E7954" = {
+			"isa" = "PBXSourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+				"A801237869241A8E27238896",
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"F86EFEE64C38103AFCD89CC4" = {
+			"isa" = "PBXFrameworksBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"75666304E662F1B1090A7149" = {
+			"isa" = "PBXResourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"BB944652E59C3CBBAC2D6E84" = {
+			"isa" = "XCBuildConfiguration";
+			"name" = "Debug";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.shivanpoudel.mathgate.action";
+				"SWIFT_VERSION" = "5.0";
+				"CODE_SIGN_STYLE" = "Automatic";
+				"TARGETED_DEVICE_FAMILY" = "1";
+				"SDKROOT" = "iphoneos";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"IPHONEOS_DEPLOYMENT_TARGET" = "26.5";
+				"MARKETING_VERSION" = "1.0";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"CODE_SIGN_ENTITLEMENTS" = "Action/MathGate.entitlements";
+				"INFOPLIST_FILE" = "Action/Info.plist";
+				"APPLICATION_EXTENSION_API_ONLY" = "YES";
+				"SKIP_INSTALL" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf";
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = " DEBUG";
+			};
+		};
+		"08442D9F300124B326F2AED7" = {
+			"isa" = "XCBuildConfiguration";
+			"name" = "Release";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.shivanpoudel.mathgate.action";
+				"SWIFT_VERSION" = "5.0";
+				"CODE_SIGN_STYLE" = "Automatic";
+				"TARGETED_DEVICE_FAMILY" = "1";
+				"SDKROOT" = "iphoneos";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"IPHONEOS_DEPLOYMENT_TARGET" = "26.5";
+				"MARKETING_VERSION" = "1.0";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"CODE_SIGN_ENTITLEMENTS" = "Action/MathGate.entitlements";
+				"INFOPLIST_FILE" = "Action/Info.plist";
+				"APPLICATION_EXTENSION_API_ONLY" = "YES";
+				"SKIP_INSTALL" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+			};
+		};
+		"CD468654DF78B1BD9DD45D4B" = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = (
+				"BB944652E59C3CBBAC2D6E84",
+				"08442D9F300124B326F2AED7",
+			);
+			"defaultConfigurationIsVisible" = 0;
+			"defaultConfigurationName" = "Release";
+		};
+		"53E9D4DFC252EC4374E62727" = {
+			"isa" = "PBXNativeTarget";
+			"buildConfigurationList" = "CD468654DF78B1BD9DD45D4B";
+			"buildPhases" = (
+				"2391F80D5A75275CB42E7954",
+				"F86EFEE64C38103AFCD89CC4",
+				"75666304E662F1B1090A7149",
+			);
+			"buildRules" = (
+			);
+			"dependencies" = (
+			);
+			"name" = "MathGateAction";
+			"productName" = "MathGateAction";
+			"productReference" = "38FDCFDACC1F9681D23539D1";
+			"productType" = "com.apple.product-type.app-extension";
+		};
+		"73EBF6644258C120893E685D" = {
+			"isa" = "XCBuildConfiguration";
+			"name" = "Debug";
+			"buildSettings" = {
+				"CLANG_ENABLE_MODULES" = "YES";
+				"SWIFT_VERSION" = "5.0";
+				"SDKROOT" = "iphoneos";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf";
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = " DEBUG";
+			};
+		};
+		"0B0C687DF8B6B8DC790B519C" = {
+			"isa" = "XCBuildConfiguration";
+			"name" = "Release";
+			"buildSettings" = {
+				"CLANG_ENABLE_MODULES" = "YES";
+				"SWIFT_VERSION" = "5.0";
+				"SDKROOT" = "iphoneos";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+			};
+		};
+		"76F8DEC3DFE0BDB465198890" = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = (
+				"73EBF6644258C120893E685D",
+				"0B0C687DF8B6B8DC790B519C",
+			);
+			"defaultConfigurationIsVisible" = 0;
+			"defaultConfigurationName" = "Release";
+		};
+		"244210E48437B6556980A702" = {
+			"isa" = "PBXProject";
+			"attributes" = {
+				"LastUpgradeCheck" = "2600";
+				"BuildIndependentTargetsInParallel" = "YES";
+				"TargetAttributes" = {
+					"A927FDC054A947F139A7F4A3" = {
+						"CreatedOnToolsVersion" = "26.0";
+						"ProvisioningStyle" = "Automatic";
+					};
+					"4566F7159AE567A1494CA700" = {
+						"CreatedOnToolsVersion" = "26.0";
+						"ProvisioningStyle" = "Automatic";
+					};
+					"F4920FB4AC0E87689EE8A568" = {
+						"CreatedOnToolsVersion" = "26.0";
+						"ProvisioningStyle" = "Automatic";
+					};
+					"2A002E0A953A26A48F7A1E05" = {
+						"CreatedOnToolsVersion" = "26.0";
+						"ProvisioningStyle" = "Automatic";
+					};
+					"53E9D4DFC252EC4374E62727" = {
+						"CreatedOnToolsVersion" = "26.0";
+						"ProvisioningStyle" = "Automatic";
+					};
+				};
+			};
+			"buildConfigurationList" = "76F8DEC3DFE0BDB465198890";
+			"compatibilityVersion" = "Xcode 14.0";
+			"developmentRegion" = "en";
+			"hasScannedForEncodings" = 0;
+			"knownRegions" = (
+				"en",
+				"Base",
+			);
+			"mainGroup" = "0D6E4079E36703EBD37C0072";
+			"productRefGroup" = "0A3E27B8CA818264D75C8D81";
+			"projectDirPath" = "";
+			"projectRoot" = "";
+			"targets" = (
+				"A927FDC054A947F139A7F4A3",
+				"4566F7159AE567A1494CA700",
+				"F4920FB4AC0E87689EE8A568",
+				"2A002E0A953A26A48F7A1E05",
+				"53E9D4DFC252EC4374E62727",
+			);
+		};
+	};
+	"rootObject" = "244210E48437B6556980A702";
+}

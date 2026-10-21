@@ -21,11 +21,11 @@ def configs(key, settings):
 names=['MathGate','MathGatePractice','MathGateMonitor','MathGateShield','MathGateAction']
 folders={'MathGate':'App','MathGatePractice':'App','MathGateMonitor':'Monitor','MathGateShield':'Shield','MathGateAction':'Action'}
 source_sets={
-'MathGate':['Core/Arithmetic.swift','App/MathGateApp.swift','App/ContentView.swift','App/Blocker.swift','Shared/GateState.swift'],
-'MathGatePractice':['Core/Arithmetic.swift','App/MathGateApp.swift','App/ContentView.swift','App/Blocker.swift'],
+'MathGate':['Core/Arithmetic.swift','App/MathGateApp.swift','App/ContentView.swift','App/Blocker.swift','App/Preferences.swift','App/SettingsView.swift','App/ChallengeView.swift','Shared/GateState.swift'],
+'MathGatePractice':['Core/Arithmetic.swift','App/MathGateApp.swift','App/ContentView.swift','App/Blocker.swift','App/Preferences.swift','App/SettingsView.swift','App/ChallengeView.swift'],
 'MathGateMonitor':['Monitor/ActivityMonitor.swift','Shared/GateState.swift'],
 'MathGateShield':['Shield/ShieldConfigurationExtension.swift'],
-'MathGateAction':['Action/ShieldActionExtension.swift']}
+'MathGateAction':['Action/ShieldActionExtension.swift','Shared/GateState.swift']}
 refs={}
 for f in sorted(ROOT.rglob('*')):
     if not f.is_file() or '.xcodeproj' in str(f) or '.git' in f.parts: continue
@@ -57,7 +57,7 @@ for index,name in enumerate(names):
     if extension:
         settings.update({'INFOPLIST_FILE':folder+'/Info.plist','APPLICATION_EXTENSION_API_ONLY':'YES','SKIP_INSTALL':'YES','LD_RUNPATH_SEARCH_PATHS':['$(inherited)','@executable_path/Frameworks','@executable_path/../../Frameworks']})
     else:
-        settings.update({'GENERATE_INFOPLIST_FILE':'YES','INFOPLIST_KEY_CFBundleDisplayName':'MathGate Practice' if practice else 'MathGate','INFOPLIST_KEY_UILaunchScreen_Generation':'YES','INFOPLIST_KEY_UIApplicationSceneManifest_Generation':'YES','INFOPLIST_KEY_UISupportedInterfaceOrientations':'UIInterfaceOrientationPortrait','INFOPLIST_KEY_UIUserInterfaceStyle':'Light'})
+        settings.update({'GENERATE_INFOPLIST_FILE':'YES','INFOPLIST_KEY_CFBundleDisplayName':'MathGate Practice' if practice else 'MathGate','INFOPLIST_KEY_UILaunchScreen_Generation':'YES','INFOPLIST_KEY_UIApplicationSceneManifest_Generation':'YES','INFOPLIST_KEY_UISupportedInterfaceOrientations':'UIInterfaceOrientationPortrait'})
     obj('target:'+name,'PBXNativeTarget',buildConfigurationList=configs(name,settings),buildPhases=phases,buildRules=[],dependencies=dependencies,name=name,productName=name,productReference=products[index],productType='com.apple.product-type.app-extension' if extension else 'com.apple.product-type.application')
 obj('project','PBXProject',attributes={'LastUpgradeCheck':'2600','BuildIndependentTargetsInParallel':'YES','TargetAttributes':{uid('target:'+n):{'CreatedOnToolsVersion':'26.0','ProvisioningStyle':'Automatic'} for n in names}},buildConfigurationList=configs('project',{'CLANG_ENABLE_MODULES':'YES','SWIFT_VERSION':'5.0','SDKROOT':'iphoneos'}),compatibilityVersion='Xcode 14.0',developmentRegion='en',hasScannedForEncodings=0,knownRegions=['en','Base'],mainGroup=main_group,productRefGroup=product_group,projectDirPath='',projectRoot='',targets=[uid('target:'+n) for n in names])
 def encode(value,level=0):

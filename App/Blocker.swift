@@ -12,7 +12,13 @@ final class Blocker: ObservableObject {
     @Published var unlockUntil: Date?
     #if PRACTICE
     let isPractice = true
-    var status: String { "Ten questions. Typed answers. No distractions." }
+    let authorized = false
+    let enabled = false
+    let selectedAppCount = 0
+    var status: String { "Practice now. Set up app blocking when you are ready." }
+    func authorize() async {}
+    func enable() {}
+    func disable() {}
     var canStart: Bool { true }
     func refresh() {}
     func lockNow() {}
@@ -22,6 +28,7 @@ final class Blocker: ObservableObject {
     @Published var authorized = false
     @Published var enabled = false
     @Published var selection = FamilyActivitySelection()
+    var selectedAppCount: Int { selection.applicationTokens.count }
     var canStart: Bool { authorized && enabled && !selection.applicationTokens.isEmpty }
     var status: String {
         if !authorized { return "Allow Screen Time access to get started." }
@@ -66,6 +73,7 @@ final class Blocker: ObservableObject {
         lockNow()
     }
     func disable() {
+        GateState.challengeRequested = false
         GateState.enabled = false
         GateState.activity = nil
         GateState.expiry = nil

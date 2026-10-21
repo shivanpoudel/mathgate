@@ -1,144 +1,161 @@
 import SwiftUI
 import Combine
-#if !PRACTICE
-import FamilyControls
-#endif
+
+struct ChallengeSession: Identifiable {
+    let id = UUID()
+    let unlocksApps: Bool
+    let configuration: MathConfiguration
+}
 
 struct ContentView: View {
     @StateObject private var blocker = Blocker()
+    @EnvironmentObject private var preferences: AppPreferences
     @Environment(\.scenePhase) private var scenePhase
-    @State private var challenge = Challenge()
-    @State private var answer = ""
-    @State private var solving = false
+    @State private var showSettings = false
+    @State private var showPreviewNotice = false
+    @State private var confirmDisable = false
+    @State private var busy = false
+    @State private var session: ChallengeSession?
     @State private var message = ""
-    @State private var showPicker = false
-    @State private var started = Date()
-    @State private var elapsed: TimeInterval = 0
-    @FocusState private var focused: Bool
-    #if !PRACTICE
-    @State private var selection = FamilyActivitySelection()
-    #endif
 
+    private var accessActive: Bool {
+        if let end = blocker.unlockUntil { return end > Date() }
+        return false
+    }
+    private var buttonTitle: String {
+        if busy { return "Please wait" }
+        if accessActive { return "Block again" }
+        return blocker.enabled ? "Blocked" : "Block"
+    }
     var body: some View {
-        GeometryReader { geometry in
-            ScrollView {
-                VStack(spacing: 24) {
-                    Text("MathGate").font(.system(size: 28, weight: .bold, design: .serif))
-                    if solving {
-                        Text("\(challenge.completed) / 10 correct").font(.system(.body, design: .monospaced))
-                        if let problem = challenge.current {
-                            Text(problem.text).font(.system(size: 44, design: .monospaced))
-                                .minimumScaleFactor(0.5).lineLimit(1)
-                                .accessibilityLabel(problem.text)
-                            TextField("answer", text: $answer)
-                                .font(.system(size: 32, design: .monospaced))
-                                .multilineTextAlignment(.center).keyboardType(.numberPad)
-                                .textFieldStyle(.plain).padding(12)
-                                .overlay(Rectangle().stroke(.black, lineWidth: 1))
-                                .focused($focused).accessibilityLabel("Answer")
-                                .autocorrectionDisabled()
-                                .textInputAutocapitalization(.never)
-                                .task {
-                                    // Request focus after the conditional field has mounted.
-                                    await Task.yield()
-                                    guard !Task.isCancelled, solving else { return }
-                                    focused = true
-                                }
-                                .onChange(of: answer) { _, value in
-                                    if challenge.submit(value) {
-                                        answer = ""
-                                        if challenge.isComplete { finish() }
-                                    }
-                                }
-                            Text("Type the answer. Correct answers advance automatically.")
-                                .font(.footnote).foregroundStyle(.secondary)
-                            Button("Cancel") { solving = false; answer = ""; focused = false }
-                        }
-                    } else {
+        NavigationStack {
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(spacing: 26) {
+                        Text("MathGate").font(.system(size: 32, weight: .bold, design: .serif))
                         Text(blocker.status).multilineTextAlignment(.center)
-                        if let end = blocker.unlockUntil, end > Date() {
-                            Text("Access until \(end.formatted(date: .omitted, time: .shortened))")
-                            Button("block again now") { blocker.lockNow(); message = "" }
-                        } else {
-                            Button(blocker.isPractice ? "start practice" : "solve 10 questions") { begin() }
-                                .disabled(!blocker.canStart)
-                        }
-                        if !message.isEmpty { Text(message).multilineTextAlignment(.center) }
-                        if !blocker.error.isEmpty { Text(blocker.error).foregroundStyle(.red) }
-                        #if !PRACTICE
-                        if !blocker.authorized {
-                            Button("allow Screen Time access") { Task { await blocker.authorize() } }
-                        } else {
-                            Button("choose apps") { selection = blocker.selection; showPicker = true }
-                            Text("\(blocker.selection.applicationTokens.count) apps selected")
-                            if blocker.enabled {
-                                Button("turn blocking off") { blocker.disable(); message = "" }
-                            } else {
-                                Button("turn blocking on") { blocker.enable(); message = "" }
-                                    .disabled(blocker.selection.applicationTokens.isEmpty)
+                            .foregroundStyle(.secondary)
+                        Button { handleBlockButton() } label: {
+                            VStack(spacing: 14) {
+                                Image(systemName: blocker.enabled && !accessActive ? "lock.fill" : "power")
+                                    .font(.system(size: 38, weight: .regular))
+                                Text(buttonTitle).font(.system(size: 24, design: .monospaced))
                             }
+                            .frame(width: 180, height: 180)
+                            .background(Color(uiColor: .secondarySystemBackground), in: Circle())
+                            .overlay(Circle().stroke(Color.primary, lineWidth: 1))
+                            .contentShape(Circle())
                         }
-                        Text("10 correct answers unlock all selected apps for 15 minutes. Reopening an app during that window does not require another round.")
-                            .font(.footnote).multilineTextAlignment(.center)
-                        #else
-                        Text("Practice build. This version does not block other apps.")
-                            .font(.footnote).multilineTextAlignment(.center)
-                        #endif
+                        .buttonStyle(.plain).disabled(busy)
+                        .accessibilityLabel(buttonTitle)
+                        .accessibilityHint(blocker.enabled && !accessActive
+                            ? "Opens the option to turn blocking off" : "Turns on app blocking")
+                        if let end = blocker.unlockUntil, accessActive {
+                            Text("Access until \(end.formatted(date: .omitted, time: .shortened))")
+                                .font(.footnote)
+                        }
+                        if blocker.enabled && !accessActive && blocker.canStart {
+                            Button("Solve to unlock") { start(unlocksApps: true) }
+                                .buttonStyle(PlainBoxStyle())
+                        }
+                        Button("Practice math") { start(unlocksApps: false) }
+                            .buttonStyle(PlainBoxStyle())
+                        if !message.isEmpty { Text(message).multilineTextAlignment(.center) }
+                        if !blocker.error.isEmpty {
+                            Text(blocker.error).foregroundStyle(.red).multilineTextAlignment(.center)
+                        }
+                        if blocker.isPractice {
+                            Text("Preview build. Other apps are not blocked.")
+                                .font(.footnote).foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                        } else {
+                            Text("10 correct answers · 15 minutes of access")
+                                .font(.footnote).foregroundStyle(.secondary)
+                        }
                     }
+                    .padding(28).frame(maxWidth: 440)
+                    .frame(maxWidth: .infinity, minHeight: geometry.size.height, alignment: .center)
                 }
-                .padding(28)
-                .frame(maxWidth: 440)
-                .frame(maxWidth: .infinity, minHeight: geometry.size.height, alignment: .center)
             }
-            .scrollDismissesKeyboard(.never)
+            .background(Color(uiColor: .systemBackground))
+            .foregroundStyle(.primary)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button { showSettings = true } label: {
+                        Image(systemName: "gearshape").frame(width: 44, height: 44)
+                    }
+                    .accessibilityLabel("Settings")
+                }
+            }
+            .toolbarBackground(.hidden, for: .navigationBar)
         }
-        .background(Color.white).foregroundStyle(.black)
-        .buttonStyle(PlainBoxStyle())
+        .tint(.primary)
+        .sheet(isPresented: $showSettings, onDismiss: consumeShieldRequest) {
+            SettingsView(blocker: blocker)
+                .environmentObject(preferences)
+                .preferredColorScheme(preferences.settings.appearance.colorScheme)
+        }
+        .fullScreenCover(item: $session, onDismiss: consumeShieldRequest) { current in
+            ChallengeView(configuration: current.configuration, unlocksApps: current.unlocksApps) { elapsed in
+                if current.unlocksApps {
+                    message = blocker.grant() ? "Complete. Return to your app to use the access window." : ""
+                } else { message = String(format: "10 correct in %.1f seconds.", elapsed) }
+                session = nil
+            }
+            .preferredColorScheme(preferences.settings.appearance.colorScheme)
+        }
+        .alert("Preview build", isPresented: $showPreviewNotice) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("You can try settings and practice here. Blocking other apps needs the full MathGate build with Screen Time access on an iPhone.")
+        }
+        .confirmationDialog("Turn off blocking?", isPresented: $confirmDisable, titleVisibility: .visible) {
+            Button("Turn off blocking", role: .destructive) { blocker.disable(); message = "" }
+            Button("Cancel", role: .cancel) {}
+        } message: { Text("Your selected apps will be available without completing a challenge.") }
+        .task { blocker.refresh(); consumeShieldRequest() }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .active { blocker.refresh() }
+            if phase == .active { blocker.refresh(); consumeShieldRequest() }
         }
         .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { now in
             if let expiry = blocker.unlockUntil, expiry <= now { blocker.refresh() }
         }
+    }
+    private func start(unlocksApps: Bool) {
+        message = ""
+        session = ChallengeSession(unlocksApps: unlocksApps, configuration: preferences.settings.math)
+    }
+    private func handleBlockButton() {
+        message = ""
+        if blocker.isPractice { showPreviewNotice = true; return }
+        if accessActive { blocker.lockNow(); return }
+        if blocker.enabled { confirmDisable = true; return }
+        busy = true
+        Task { @MainActor in
+            defer { busy = false }
+            if !blocker.authorized { await blocker.authorize() }
+            guard blocker.authorized else { return }
+            if blocker.selectedAppCount == 0 { showSettings = true }
+            else { blocker.enable() }
+        }
+    }
+    private func consumeShieldRequest() {
         #if !PRACTICE
-        .sheet(isPresented: $showPicker) {
-            NavigationStack {
-                FamilyActivityPicker(selection: $selection)
-                    .navigationTitle("Choose individual apps")
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Cancel") { showPicker = false }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Save") { blocker.save(selection); showPicker = false }
-                        }
-                    }
-            }
-        }
+        guard !showSettings, session == nil, GateState.challengeRequested else { return }
+        GateState.challengeRequested = false
+        blocker.refresh()
+        if blocker.canStart && !accessActive { start(unlocksApps: true) }
         #endif
-    }
-    private func begin() {
-        challenge = Challenge(); answer = ""; message = ""; started = Date()
-        focused = false
-        solving = true
-    }
-    private func finish() {
-        elapsed = Date().timeIntervalSince(started)
-        solving = false; focused = false
-        if blocker.grant() {
-            message = blocker.isPractice
-                ? String(format: "10 correct in %.1f seconds.", elapsed)
-                : "Complete. Return to the selected app to use your access window."
-        }
     }
 }
 
 struct PlainBoxStyle: ButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled
     func makeBody(configuration: Configuration) -> some View {
         configuration.label.font(.system(size: 16, design: .monospaced))
             .padding(.horizontal, 16).padding(.vertical, 12)
-            .background(configuration.isPressed ? Color.gray.opacity(0.25) : Color(white: 0.94))
-            .overlay(Rectangle().stroke(Color.black, lineWidth: 1))
-            .opacity(configuration.isPressed ? 0.7 : 1)
+            .background(Color(uiColor: .secondarySystemBackground))
+            .overlay(Rectangle().stroke(Color.primary, lineWidth: 1))
+            .opacity(!isEnabled ? 0.4 : (configuration.isPressed ? 0.7 : 1))
     }
 }

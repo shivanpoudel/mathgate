@@ -2,9 +2,17 @@
 
 An original, deliberately plain iPhone mental-math gate, inspired by the interaction style of Zetamac. This project does not contain Zetamac source code, artwork, or branding. Project name: MathGate.
 
+## Main app and settings
+
+The home screen has a central Block button and a Settings gear in the top right. In the full build, Block requests Screen Time access if necessary, directs you to app selection when no apps are selected, and enables blocking when ready. The Blocked state lets you turn blocking off with confirmation. During an access window the central button becomes Block again. Solve to unlock opens the existing ten-question flow. Practice math is always available, but a practice round never grants access to blocked apps.
+
+The MathGatePractice scheme previews this same main app and settings. Its Block button explains the physical-device requirement and never claims that apps are blocked. Use Practice math to test question generation and the keypad.
+
+Settings include System/Light/Dark appearance, four operation toggles, configurable number ranges from 1 to 999, app selection in the full build, instructions, a local-data privacy explanation, version information, and reset math settings. Changes persist locally and take effect on the next round. At least one operation remains enabled. Appearance applies to the app, settings, and math screens; the system shield keeps its existing plain light design in this iteration. Questions per unlock and the 15-minute window remain fixed. No adaptive model or automatic difficulty change is implemented.
+
 ## Current behavior
 
-Select individual apps, turn blocking on, and open one of those apps. Apple's shield offers “Solve questions,” which opens MathGate. Start the round and type ten correct answers. Correct answers advance automatically, with no multiple choice and no submit button. Wrong answers leave the current question in place. Subtraction stays positive and division has integer results. Addition operands are 2–100, multiplication uses 2–12 by 2–100, and the inverse operations use those same generated pairs.
+Select individual apps, turn blocking on, and open one of those apps. Apple's shield offers “Solve questions,” which opens MathGate. Start the round and type ten correct answers. Correct answers advance automatically, with no multiple choice and no submit button. Wrong answers leave the current question in place. Subtraction stays positive and division has integer results. Default addition operands are 2–100 and multiplication uses 2–12 by 2–100. Settings can change these ranges and enabled operations. Subtraction and division use those generated pairs in reverse to preserve positive, integer answers.
 
 A completed round lifts restrictions on ALL selected apps for 15 minutes. Return to the desired app yourself. A Device Activity extension restores the block at the end, even when the main app is not open. This is an access-window MVP, not an every-launch interceptor: exiting and reopening Instagram inside the window does not require another round. Apple's scheduled callbacks are system-managed, so precise timing and background reliability must be tested on your device. The 15-minute choice matches the documented minimum Device Activity monitoring interval.
 
@@ -30,9 +38,11 @@ Choose the **MathGate** scheme, select your physical iPhone, and run. Approve Sc
 
 ## Validation status and first device check
 
-The delivery environment has no Xcode, Swift toolchain, or attached iPhone. The source, project structure, plists, scheme XML, extension embedding, and source membership were inspected, but the Swift code has NOT been compiled here and the app has NOT been installed or tested on hardware. Treat this as the first implementation to build and verify, not a production release. Send back the first compiler error or provisioning message if Xcode reports one.
+The earlier practice interface was built and tried in the user’s iPhone simulator. This main-app/settings revision has not been compiled or run in the delivery environment, which lacks Xcode, a Swift toolchain, and an attached iPhone. Structural checks are not a simulator or device test. The full Screen Time workflow remains unverified on hardware. Send back the first compiler or provisioning error if Xcode reports one.
 
 After installing, verify that cancelling or giving wrong answers leaves Instagram blocked, and that the tenth correct answer grants access. Verify that it reblocks after 15 minutes with MathGate closed, not just while MathGate is in the foreground. Repeat after a phone restart, across midnight, and after changing the phone's time or timezone before relying on the blocker daily. Test revoking and restoring Screen Time authorization. Failed schedule creation should display an error and leave the shield in place. Selecting different apps or tapping “block again now” cancels the current window and blocks immediately. Background scheduling can be delayed by iOS; reopening MathGate reconciles expired state.
+
+For this revision, check that the central Block button in the practice build shows an honest preview notice. Change each appearance mode and reopen the app to verify persistence. Enable just Division and confirm all practice questions are division with integer results; try a fixed factor range of 1–1 to verify a round still completes. Reset math settings and confirm blocking choices are untouched. Check that cancelling practice does not grant access, and that only the full build's unlock challenge can do so. In the simulator, enable I/O > Keyboard > Toggle Software Keyboard to see the numeric keypad.
 
 Core arithmetic tests can run on your Mac from this folder with:
 
@@ -60,11 +70,11 @@ Edit Swift files in VS Code and build/run the same checkout in Xcode. Save your 
 
 ## Where to make changes
 
-`Core/Arithmetic.swift` defines the problem generation and ten-answer gate. `App/ContentView.swift` defines the visual layout and typed-answer interaction. `App/Blocker.swift` owns authorization and access scheduling. `Shared/GateState.swift` shares the selected apps and deadline with the monitor. `Shield` and `Action` define the system blocking screen and its buttons. `Monitor` restores restrictions when the scheduled access interval ends. `Tests` covers the arithmetic and challenge completion logic.
+`Core/Arithmetic.swift` defines the problem generation and ten-answer gate. `App/ContentView.swift` defines the home screen and routes practice versus unlock sessions. `App/ChallengeView.swift` owns the existing typed-answer flow. `App/SettingsView.swift` contains settings, and `App/Preferences.swift` persists appearance and math choices. `App/Blocker.swift` owns authorization and access scheduling. `Shared/GateState.swift` shares the selected apps and deadline with the monitor. `Shield` and `Action` define the system blocking screen and its buttons. `Monitor` restores restrictions when the scheduled access interval ends. `Tests` covers the arithmetic and challenge completion logic.
 
 The included Xcode project is ready to open. `scripts/generate_project.py` is an optional, dependency-free generator used to create it. Running that script again overwrites project settings, including changes made in Xcode, so do not rerun it casually after configuring signing. New Swift files must be added to the appropriate target membership in Xcode, not merely created in VS Code.
 
-Keep dark mode, statistics, difficulty settings, and adaptive question selection for later iterations, after the phone workflow passes the checks above. Separate math logic and UI make those extensions possible without rewriting the Screen Time layer.
+Keep session history and adaptive question selection for later iterations. A future adaptive scheduler could first adjust ranges using accuracy and response time; an ML model is optional, not necessary to make difficulty progressive. The current generator remains random and applies the same chosen settings for the entire round.
 
 ## Apple references
 

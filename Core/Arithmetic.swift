@@ -1,10 +1,45 @@
 import Foundation
 
+struct NumberRange: Codable, Equatable {
+    var lower: Int
+    var upper: Int
+    var normalized: NumberRange {
+        let low = min(max(lower, 1), 999)
+        return NumberRange(lower: low, upper: min(max(upper, low), 999))
+    }
+    var values: ClosedRange<Int> { normalized.lower...normalized.upper }
+}
+
+struct MathConfiguration: Codable, Equatable {
+    var operations = Set(Problem.Operation.allCases)
+    var addition = NumberRange(lower: 2, upper: 100)
+    var firstFactor = NumberRange(lower: 2, upper: 12)
+    var secondFactor = NumberRange(lower: 2, upper: 100)
+    var normalized: MathConfiguration {
+        var result = self
+        if result.operations.isEmpty { result.operations = Set(Problem.Operation.allCases) }
+        result.addition = addition.normalized
+        result.firstFactor = firstFactor.normalized
+        result.secondFactor = secondFactor.normalized
+        return result
+    }
+}
+
 struct Problem: Equatable {
     let left: Int
     let right: Int
     let operation: Operation
-    enum Operation: String, CaseIterable { case add = "+", subtract = "−", multiply = "×", divide = "÷" }
+    enum Operation: String, CaseIterable, Codable {
+        case add = "+", subtract = "−", multiply = "×", divide = "÷"
+        var title: String {
+            switch self {
+            case .add: return "Addition"
+            case .subtract: return "Subtraction"
+            case .multiply: return "Multiplication"
+            case .divide: return "Division"
+            }
+        }
+    }
     var answer: Int {
         switch operation {
         case .add: return left + right
@@ -14,17 +49,22 @@ struct Problem: Equatable {
         }
     }
     var text: String { "\(left) \(operation.rawValue) \(right)" }
-    static func random<R: RandomNumberGenerator>(using rng: inout R) -> Problem {
-        let op = Operation.allCases.randomElement(using: &rng)!
+    static func random<R: RandomNumberGenerator>(
+        configuration: MathConfiguration = MathConfiguration(), using rng: inout R
+    ) -> Problem {
+        let config = configuration.normalized
+        // Stable ordering makes seeded test generators reproducible.
+        let enabled = Operation.allCases.filter { config.operations.contains($0) }
+        let op = enabled.randomElement(using: &rng)!
         switch op {
         case .add, .subtract:
-            let a = Int.random(in: 2...100, using: &rng)
-            let b = Int.random(in: 2...100, using: &rng)
+            let a = Int.random(in: config.addition.values, using: &rng)
+            let b = Int.random(in: config.addition.values, using: &rng)
             return op == .add ? Problem(left: a, right: b, operation: op)
                 : Problem(left: a + b, right: a, operation: op)
         case .multiply, .divide:
-            let a = Int.random(in: 2...12, using: &rng)
-            let b = Int.random(in: 2...100, using: &rng)
+            let a = Int.random(in: config.firstFactor.values, using: &rng)
+            let b = Int.random(in: config.secondFactor.values, using: &rng)
             return op == .multiply ? Problem(left: a, right: b, operation: op)
                 : Problem(left: a * b, right: a, operation: op)
         }
@@ -32,16 +72,22 @@ struct Problem: Equatable {
 }
 
 struct Challenge {
+    static let questionCount = 10
     let questions: [Problem]
     private(set) var completed = 0
     var isComplete: Bool { completed == questions.count }
     var current: Problem? { isComplete ? nil : questions[completed] }
-    init() {
+    init(configuration: MathConfiguration = MathConfiguration()) {
         var rng = SystemRandomNumberGenerator()
         var items: [Problem] = []
-        while items.count < 10 {
-            let item = Problem.random(using: &rng)
-            if items.last != item { items.append(item) }
+        for _ in 0..<Self.questionCount {
+            var item = Problem.random(configuration: configuration, using: &rng)
+            // Bounded retries: a single possible problem must never hang the app.
+            for _ in 0..<8 {
+                guard items.last == item else { break }
+                item = Problem.random(configuration: configuration, using: &rng)
+            }
+            items.append(item)
         }
         questions = items
     }

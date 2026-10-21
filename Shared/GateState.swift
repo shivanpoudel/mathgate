@@ -7,6 +7,10 @@ enum GateState {
     static let group = "group.com.shivanpoudel.mathgate"
     static var defaults: UserDefaults { UserDefaults(suiteName: group)! }
     static let store = ManagedSettingsStore(named: ManagedSettingsStore.Name("mathgate"))
+    static var challengeRequested: Bool {
+        get { defaults.bool(forKey: "challengeRequested") }
+        set { defaults.set(newValue, forKey: "challengeRequested") }
+    }
     static var enabled: Bool {
         get { defaults.bool(forKey: "enabled") }
         set { defaults.set(newValue, forKey: "enabled") }

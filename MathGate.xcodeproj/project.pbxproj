@@ -35,6 +35,12 @@
 			"path" = "App/Blocker.swift";
 			"sourceTree" = "<group>";
 		};
+		"32135BFE5C0BAADD6DA66594" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "App/ChallengeView.swift";
+			"sourceTree" = "<group>";
+		};
 		"CA7C55708D5974AE116887EC" = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
@@ -51,6 +57,18 @@
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
 			"path" = "App/MathGateApp.swift";
+			"sourceTree" = "<group>";
+		};
+		"1C6ADC428B25266079B4B525" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "App/Preferences.swift";
+			"sourceTree" = "<group>";
+		};
+		"DE72EE87FF05D548064EA5A7" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "App/SettingsView.swift";
 			"sourceTree" = "<group>";
 		};
 		"2AA3635DB49A4D9959C2B768" = {
@@ -180,9 +198,12 @@
 				"6AFA6D9E8147A2E85381A4E3",
 				"7764D6077376280C922921C3",
 				"03388B1BF4410698E893346C",
+				"32135BFE5C0BAADD6DA66594",
 				"CA7C55708D5974AE116887EC",
 				"E72C32ECCE2BE0CA6A96801B",
 				"A489542C351C86CE0F5A9F0D",
+				"1C6ADC428B25266079B4B525",
+				"DE72EE87FF05D548064EA5A7",
 				"2AA3635DB49A4D9959C2B768",
 				"973FDCA46260503B579A5C81",
 				"02D9C1D9C43FDC53250D2577",
@@ -215,6 +236,18 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "03388B1BF4410698E893346C";
 		};
+		"B39618F3E840A2FB06F325CF" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "1C6ADC428B25266079B4B525";
+		};
+		"FBBD57E28083B0E2D0BE0AD0" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "DE72EE87FF05D548064EA5A7";
+		};
+		"B44D54173C91263C720B96DC" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "32135BFE5C0BAADD6DA66594";
+		};
 		"2BF99C24A9325DF284136D5D" = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = "D89A0983A1E3502A4075F278";
@@ -227,6 +260,9 @@
 				"52DC0B3252F8EC6894476E93",
 				"333D8B951CAD28441687C274",
 				"92AFC14E065B7A893E060F53",
+				"B39618F3E840A2FB06F325CF",
+				"FBBD57E28083B0E2D0BE0AD0",
+				"B44D54173C91263C720B96DC",
 				"2BF99C24A9325DF284136D5D",
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
@@ -345,7 +381,6 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation" = "YES";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation" = "YES";
 				"INFOPLIST_KEY_UISupportedInterfaceOrientations" = "UIInterfaceOrientationPortrait";
-				"INFOPLIST_KEY_UIUserInterfaceStyle" = "Light";
 				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
 				"DEBUG_INFORMATION_FORMAT" = "dwarf";
 				"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = " DEBUG";
@@ -375,7 +410,6 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation" = "YES";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation" = "YES";
 				"INFOPLIST_KEY_UISupportedInterfaceOrientations" = "UIInterfaceOrientationPortrait";
-				"INFOPLIST_KEY_UIUserInterfaceStyle" = "Light";
 				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
 				"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
 			};
@@ -426,6 +460,18 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "03388B1BF4410698E893346C";
 		};
+		"0A2B1D10B363B863BF01E633" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "1C6ADC428B25266079B4B525";
+		};
+		"8809344E947B56ECD0B392AE" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "DE72EE87FF05D548064EA5A7";
+		};
+		"4B87A7D463854B7FA48449A1" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "32135BFE5C0BAADD6DA66594";
+		};
 		"0AB083C919B5955BE86C3579" = {
 			"isa" = "PBXSourcesBuildPhase";
 			"buildActionMask" = 2147483647;
@@ -434,6 +480,9 @@
 				"CE327C1A8DCBBF69F8CB5DDD",
 				"35F1EAC9AB9A9E848AA22B9A",
 				"035D458A87E849E6F1C698DC",
+				"0A2B1D10B363B863BF01E633",
+				"8809344E947B56ECD0B392AE",
+				"4B87A7D463854B7FA48449A1",
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
 		};
@@ -475,7 +524,6 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation" = "YES";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation" = "YES";
 				"INFOPLIST_KEY_UISupportedInterfaceOrientations" = "UIInterfaceOrientationPortrait";
-				"INFOPLIST_KEY_UIUserInterfaceStyle" = "Light";
 				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
 				"DEBUG_INFORMATION_FORMAT" = "dwarf";
 			};
@@ -504,7 +552,6 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation" = "YES";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation" = "YES";
 				"INFOPLIST_KEY_UISupportedInterfaceOrientations" = "UIInterfaceOrientationPortrait";
-				"INFOPLIST_KEY_UIUserInterfaceStyle" = "Light";
 				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
 				"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
 			};
@@ -758,11 +805,16 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = "7764D6077376280C922921C3";
 		};
+		"D2A392DEB4F16D592B956B0B" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "D89A0983A1E3502A4075F278";
+		};
 		"2391F80D5A75275CB42E7954" = {
 			"isa" = "PBXSourcesBuildPhase";
 			"buildActionMask" = 2147483647;
 			"files" = (
 				"A801237869241A8E27238896",
+				"D2A392DEB4F16D592B956B0B",
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
 		};

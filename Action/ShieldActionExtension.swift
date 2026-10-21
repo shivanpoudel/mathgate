@@ -6,6 +6,7 @@ final class ShieldActionExtension: ShieldActionDelegate {
         switch action {
         case .primaryButtonPressed:
             // Requires an SDK that includes this API (introduced in iOS 26.5).
+            GateState.challengeRequested = true
             completionHandler(.openParentalControlsApp)
         case .secondaryButtonPressed:
             completionHandler(.close)

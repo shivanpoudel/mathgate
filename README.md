@@ -1,10 +1,10 @@
-# Arithmetic Gate
+# MathGate
 
-An original, deliberately plain iPhone mental-math gate, inspired by the interaction style of Zetamac. This project does not contain Zetamac source code, artwork, or branding. Working project name: MathGate.
+An original, deliberately plain iPhone mental-math gate, inspired by the interaction style of Zetamac. This project does not contain Zetamac source code, artwork, or branding. Project name: MathGate.
 
 ## Current behavior
 
-Select individual apps, turn blocking on, and open one of those apps. Apple's shield offers “Solve questions,” which opens Arithmetic Gate. Start the round and type ten correct answers. Correct answers advance automatically, with no multiple choice and no submit button. Wrong answers leave the current question in place. Subtraction stays positive and division has integer results. Addition operands are 2–100, multiplication uses 2–12 by 2–100, and the inverse operations use those same generated pairs.
+Select individual apps, turn blocking on, and open one of those apps. Apple's shield offers “Solve questions,” which opens MathGate. Start the round and type ten correct answers. Correct answers advance automatically, with no multiple choice and no submit button. Wrong answers leave the current question in place. Subtraction stays positive and division has integer results. Addition operands are 2–100, multiplication uses 2–12 by 2–100, and the inverse operations use those same generated pairs.
 
 A completed round lifts restrictions on ALL selected apps for 15 minutes. Return to the desired app yourself. A Device Activity extension restores the block at the end, even when the main app is not open. This is an access-window MVP, not an every-launch interceptor: exiting and reopening Instagram inside the window does not require another round. Apple's scheduled callbacks are system-managed, so precise timing and background reliability must be tested on your device. The 15-minute choice matches the documented minimum Device Activity monitoring interval.
 

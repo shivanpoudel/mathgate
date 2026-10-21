@@ -22,8 +22,7 @@ struct ContentView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                Text("Arithmetic Gate").font(.system(size: 28, weight: .bold, design: .serif))
-                Rectangle().frame(height: 1)
+                Text("MathGate").font(.system(size: 28, weight: .bold, design: .serif))
                 if solving {
                     Text("\(challenge.completed) / 10 correct").font(.system(.body, design: .monospaced))
                     if let problem = challenge.current {
@@ -44,7 +43,7 @@ struct ContentView: View {
                             }
                         Text("Type the answer. Correct answers advance automatically.")
                             .font(.footnote).foregroundStyle(.secondary)
-                        Button("cancel") { solving = false; answer = ""; focused = false }
+                        Button("Cancel") { solving = false; answer = ""; focused = false }
                     }
                 } else {
                     Text(blocker.status).multilineTextAlignment(.center)
@@ -57,7 +56,6 @@ struct ContentView: View {
                     }
                     if !message.isEmpty { Text(message).multilineTextAlignment(.center) }
                     if !blocker.error.isEmpty { Text(blocker.error).foregroundStyle(.red) }
-                    Rectangle().frame(height: 1)
                     #if !PRACTICE
                     if !blocker.authorized {
                         Button("allow Screen Time access") { Task { await blocker.authorize() } }
@@ -77,7 +75,6 @@ struct ContentView: View {
                     Text("Practice build. This version does not block other apps.")
                         .font(.footnote).multilineTextAlignment(.center)
                     #endif
-                    Text("+  −  ×  ÷").font(.system(.body, design: .monospaced))
                 }
             }
             .padding(28).frame(maxWidth: 440).frame(maxWidth: .infinity)

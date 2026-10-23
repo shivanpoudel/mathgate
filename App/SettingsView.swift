@@ -38,10 +38,13 @@ struct SettingsView: View {
 
                 Section("General") {
                     NavigationLink("How to practice") {
-                        information("How to practice", text: "Choose a time limit on the home screen, then tap Start. Type each answer; correct answers advance automatically and increase your score. Wrong answers stay on the same question. The timer keeps running if you leave the app. When time runs out, your final score appears. Cancel ends a round without a result. This version does not block other apps.")
+                        information("How to practice", text: "Choose a time limit on the home screen, then tap Start. Type each answer; correct answers advance automatically and increase your score. Wrong answers stay on the same question. Leaving MathGate, locking your phone, or another interruption ends the round without earning access. When time runs out, your final score appears. Cancel ends a round without a result. Complete a full uninterrupted round with at least one correct answer to earn one Instagram visit through your Shortcuts automations. This is not system-enforced blocking.")
+                    }
+                    NavigationLink("Connect Instagram") {
+                        information("Connect Instagram", text: "Create two Shortcuts automations, both set to Run Immediately. Instagram Is Opened: Check Instagram Access, then If the result is false, Open App MathGate, End If. Instagram Is Closed: End Instagram Visit. Replace your old unconditional Open MathGate action. Complete a round, then return to Instagram yourself. Leaving Instagram resets the visit, including switching to another app. Configure both actions from the same installed MathGate app. Shortcuts can be disabled or delayed; this is a voluntary interruption.")
                     }
                     NavigationLink("Privacy & about") {
-                        information("Privacy & about", text: "MathGate generates arithmetic on your device. No account, server, advertising, analytics, or ML model is used. Appearance and math choices are saved locally. Challenge results are not kept as a history. MathGate is an independent project inspired by arithmetic speed drills, not affiliated with Zetamac.")
+                        information("Privacy & about", text: "MathGate generates arithmetic on your device. No account, server, advertising, analytics, or ML model is used. Appearance, math choices, and your Instagram completion pass are saved locally. Challenge results are not kept as a history. MathGate is an independent project inspired by arithmetic speed drills, not affiliated with Zetamac.")
                     }
                     LabeledContent("Version", value: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0")
                     Button("Reset math settings", role: .destructive) { resetMath = true }

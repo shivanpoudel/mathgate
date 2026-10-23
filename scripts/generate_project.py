@@ -21,8 +21,8 @@ def configs(key, settings):
 names=['MathGate','MathGatePractice']
 folders={'MathGate':'App','MathGatePractice':'App','MathGateMonitor':'Monitor','MathGateShield':'Shield','MathGateAction':'Action'}
 source_sets={
-'MathGate':['Core/Arithmetic.swift','App/MathGateApp.swift','App/ContentView.swift','App/Preferences.swift','App/SettingsView.swift','App/ChallengeView.swift'],
-'MathGatePractice':['Core/Arithmetic.swift','App/MathGateApp.swift','App/ContentView.swift','App/Preferences.swift','App/SettingsView.swift','App/ChallengeView.swift'],
+'MathGate':['Core/Arithmetic.swift','Core/CompletionPass.swift','App/ShortcutActions.swift','App/MathGateApp.swift','App/ContentView.swift','App/Preferences.swift','App/SettingsView.swift','App/ChallengeView.swift'],
+'MathGatePractice':['Core/Arithmetic.swift','Core/CompletionPass.swift','App/ShortcutActions.swift','App/MathGateApp.swift','App/ContentView.swift','App/Preferences.swift','App/SettingsView.swift','App/ChallengeView.swift'],
 'MathGateMonitor':['Monitor/ActivityMonitor.swift'],
 'MathGateShield':['Shield/ShieldConfigurationExtension.swift'],
 'MathGateAction':['Action/ShieldActionExtension.swift']}

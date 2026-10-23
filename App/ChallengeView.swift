@@ -9,6 +9,8 @@ struct ChallengeView: View {
     @State private var started: ContinuousClock.Instant?
     @State private var secondsLeft: Int
     @State private var finished = false
+    @State private var interrupted = false
+    @State private var earnedPass = false
     @FocusState private var focused: Bool
 
     init(configuration: MathConfiguration, duration: Int) {
@@ -26,9 +28,15 @@ struct ChallengeView: View {
             ScrollView {
                 VStack(spacing: 24) {
                     if finished {
-                        Text("Time’s up").font(.system(size: 28, weight: .bold, design: .serif))
+                        Text(interrupted ? "Round interrupted" : "Time’s up").font(.system(size: 28, weight: .bold, design: .serif))
                         Text("\(round.score) correct").font(.system(size: 36, design: .monospaced))
-                        Text("in \(Int(round.duration)) seconds").foregroundStyle(.secondary)
+                        if !interrupted {
+                            Text("in \(Int(round.duration)) seconds").foregroundStyle(.secondary)
+                        }
+                        Text(earnedPass
+                             ? "Round complete. You can return to Instagram."
+                             : (interrupted ? "Stay in MathGate for the full round to earn access." : "Answer at least one question correctly to earn access."))
+                            .font(.footnote).foregroundStyle(.secondary)
                         Button("Try again") { restart() }
                         Button("Done") { dismiss() }
                     } else {
@@ -46,19 +54,22 @@ struct ChallengeView: View {
                             .autocorrectionDisabled().textInputAutocapitalization(.never)
                             .task {
                                 await Task.yield()
-                                guard !Task.isCancelled, !finished else { return }
-                                if started == nil { started = ContinuousClock.now }
+                                guard !Task.isCancelled, !finished, scenePhase == .active else { return }
+                                if started == nil {
+                                    CompletionPassStore.shared.beginRound()
+                                    started = ContinuousClock.now
+                                }
                                 focused = true
                             }
                             .onChange(of: answer) { _, value in
-                                guard !finished, started != nil else { return }
+                                guard !finished, started != nil, scenePhase == .active else { return }
                                 let time = elapsed
                                 if round.remaining(at: time) == 0 { finish(); return }
                                 if round.submit(value, elapsed: time) { answer = "" }
                             }
                         Text("Type the answer. Correct answers advance automatically.")
                             .font(.footnote).foregroundStyle(.secondary)
-                        Button("Cancel") { focused = false; dismiss() }
+                        Button("Cancel") { CompletionPassStore.shared.beginRound(); focused = false; dismiss() }
                     }
                 }
                 .multilineTextAlignment(.center)
@@ -71,21 +82,39 @@ struct ChallengeView: View {
         .buttonStyle(PlainBoxStyle()).interactiveDismissDisabled()
         .onReceive(Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()) { _ in updateTime() }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .active {
+            if phase != .active, started != nil, !finished {
+                // Invalidate immediately, even if the UI timer has not delivered its final tick.
+                interrupted = true
+                earnedPass = false
+                finished = true
+                focused = false
+                CompletionPassStore.shared.beginRound()
+            } else if phase == .active {
+                if started == nil, !finished {
+                    CompletionPassStore.shared.beginRound()
+                    started = ContinuousClock.now
+                }
                 updateTime()
                 if !finished { focused = true }
             }
         }
     }
     private func updateTime() {
-        guard started != nil, !finished else { return }
+        guard started != nil, !finished, scenePhase == .active else { return }
         secondsLeft = Int(ceil(round.remaining(at: elapsed)))
         if secondsLeft == 0 { finish() }
     }
-    private func finish() { finished = true; focused = false; secondsLeft = 0 }
+    private func finish() {
+        guard !finished else { return }
+        earnedPass = !interrupted && scenePhase == .active && round.score > 0
+        CompletionPassStore.shared.finishRound(timeExpired: round.remaining(at: elapsed) == 0,
+                                               score: round.score, interrupted: !earnedPass)
+        finished = true; focused = false; secondsLeft = 0
+    }
     private func restart() {
         round = TimedPractice(configuration: round.configuration, duration: round.duration)
         answer = ""; secondsLeft = Int(round.duration)
-        started = nil; finished = false
+        CompletionPassStore.shared.beginRound()
+        started = nil; finished = false; interrupted = false; earnedPass = false
     }
 }

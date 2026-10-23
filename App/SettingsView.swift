@@ -1,20 +1,9 @@
 import SwiftUI
-#if !PRACTICE
-import FamilyControls
-#endif
 
 struct SettingsView: View {
-    @ObservedObject var blocker: Blocker
-    let previewGate: (Bool) -> Void
     @EnvironmentObject private var preferences: AppPreferences
     @Environment(\.dismiss) private var dismiss
     @State private var resetMath = false
-    @State private var authorizing = false
-    #if !PRACTICE
-    @State private var showPicker = false
-    @State private var selection = FamilyActivitySelection()
-    #endif
-
     var body: some View {
         NavigationStack {
             Form {
@@ -25,33 +14,6 @@ struct SettingsView: View {
                         }
                     }
                 }
-                Section {
-                    if blocker.isPractice {
-                        Text("App selection is available in the full MathGate build on your iPhone.")
-                            .foregroundStyle(.secondary)
-                    } else {
-                        LabeledContent("Screen Time", value: blocker.authorized ? "Allowed" : "Not allowed")
-                        #if !PRACTICE
-                        if blocker.authorized {
-                            Button("Choose apps (\(blocker.selectedAppCount) selected)") {
-                                selection = blocker.selection; showPicker = true
-                            }
-                        } else {
-                            Button(authorizing ? "Requesting access…" : "Allow Screen Time access") {
-                                authorizing = true
-                                Task { @MainActor in
-                                    await blocker.authorize()
-                                    authorizing = false
-                                }
-                            }
-                            .disabled(authorizing)
-                        }
-                        #endif
-                    }
-                    if !blocker.error.isEmpty { Text(blocker.error).foregroundStyle(.red) }
-                } header: { Text("Blocked apps") }
-                footer: { Text("Select individual apps, then use the Block button on the home screen. Changing the selection ends any current access window.") }
-
                 Section {
                     ForEach(Problem.Operation.allCases, id: \.self) { operation in
                         Toggle(operation.title, isOn: Binding(
@@ -75,41 +37,16 @@ struct SettingsView: View {
                 footer: { Text("Division reverses generated multiplication problems, so answers are always whole numbers. Supported numbers: 1–999.") }
 
                 Section("General") {
-                    NavigationLink {
-                        Form {
-                            Picker("Questions per app unlock", selection: $preferences.settings.math.questionCount) {
-                                ForEach(1...100, id: \.self) { count in
-                                    Text("\(count)").tag(count)
-                                }
-                            }
-                            .pickerStyle(.wheel)
-                            Text("Opening a blocked app requires this many correct answers. Turning off all blocking requires five extra questions (\(preferences.settings.math.disableQuestionCount) total).")
-                                .font(.footnote).foregroundStyle(.secondary)
-                        }
-                        .navigationTitle("Questions per unlock")
-                        .navigationBarTitleDisplayMode(.inline)
-                    } label: {
-                        LabeledContent("Questions per unlock", value: "\(preferences.settings.math.questionCount)")
-                    }
-                    LabeledContent("Turn off all blocking", value: "\(preferences.settings.math.disableQuestionCount) questions")
-                    LabeledContent("Access window", value: "15 minutes")
-                    NavigationLink("How blocking works") {
-                        information("How blocking works", text: "Select apps in Settings and tap Block on the home screen. When you open a blocked app, choose Solve questions. Complete your chosen number of correct answers to open a 15-minute access window for selected apps. Wrong answers stay on the same question; Cancel leaves restrictions in place. Reopening an app during its access window does not require another round. You can block again early. Tap Unblock on the home screen and complete five extra questions to turn blocking off for all selected apps until you enable it again. Cancelling that round keeps blocking enabled. This is a voluntary focus tool; Screen Time access can also be revoked in iOS Settings.")
+                    NavigationLink("How to practice") {
+                        information("How to practice", text: "Choose a time limit on the home screen, then tap Start. Type each answer; correct answers advance automatically and increase your score. Wrong answers stay on the same question. The timer keeps running if you leave the app. When time runs out, your final score appears. Cancel ends a round without a result. This version does not block other apps.")
                     }
                     NavigationLink("Privacy & about") {
-                        information("Privacy & about", text: "MathGate generates arithmetic on your device. No account, server, advertising, analytics, or ML model is used. Appearance and math choices are saved locally. The blocking build also stores selected app tokens and access-window state in a local App Group shared with its extensions. Challenge results are not kept as a history. MathGate is an independent project inspired by arithmetic speed drills, not affiliated with Zetamac.")
+                        information("Privacy & about", text: "MathGate generates arithmetic on your device. No account, server, advertising, analytics, or ML model is used. Appearance and math choices are saved locally. Challenge results are not kept as a history. MathGate is an independent project inspired by arithmetic speed drills, not affiliated with Zetamac.")
                     }
                     LabeledContent("Version", value: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0")
                     Button("Reset math settings", role: .destructive) { resetMath = true }
                 }
-                #if PRACTICE
-                Section("Development preview") {
-                    Button("Preview app-opening gate") { previewGate(false) }
-                    Button("Preview Unblock gate") { previewGate(true) }
-                    Text("Simulates arriving from a blocked app. This build cannot block or unlock other apps.")
-                        .font(.footnote).foregroundStyle(.secondary)
-                }
-                #endif
+
             }
             .navigationTitle("Settings").navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -118,23 +55,8 @@ struct SettingsView: View {
             .alert("Reset math settings?", isPresented: $resetMath) {
                 Button("Reset", role: .destructive) { preferences.resetMath() }
                 Button("Cancel", role: .cancel) {}
-            } message: { Text("Restore 10 questions per app unlock, all four operations, and the original number ranges. Appearance and blocked apps stay as they are.") }
-            #if !PRACTICE
-            .sheet(isPresented: $showPicker) {
-                NavigationStack {
-                    FamilyActivityPicker(selection: $selection)
-                        .navigationTitle("Choose individual apps")
-                        .navigationBarTitleDisplayMode(.inline)
-                        .toolbar {
-                            ToolbarItem(placement: .cancellationAction) { Button("Cancel") { showPicker = false } }
-                            ToolbarItem(placement: .confirmationAction) {
-                                Button("Save") { blocker.save(selection); showPicker = false }
-                            }
-                        }
-                }
-                .preferredColorScheme(preferences.settings.appearance.colorScheme)
-            }
-            #endif
+            } message: { Text("Restore all four operations and the original number ranges. Appearance and the time limit stay as they are.") }
+
         }
     }
     private func rangeControls(_ title: String, key: WritableKeyPath<MathConfiguration, NumberRange>) -> some View {

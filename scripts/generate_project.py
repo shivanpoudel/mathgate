@@ -18,14 +18,14 @@ def configs(key, settings):
         ids.append(obj(key+mode,'XCBuildConfiguration',name=mode,buildSettings=build))
     return obj(key+'configs','XCConfigurationList',buildConfigurations=ids,defaultConfigurationIsVisible=0,defaultConfigurationName='Release')
 
-names=['MathGate','MathGatePractice','MathGateMonitor','MathGateShield','MathGateAction']
+names=['MathGate','MathGatePractice']
 folders={'MathGate':'App','MathGatePractice':'App','MathGateMonitor':'Monitor','MathGateShield':'Shield','MathGateAction':'Action'}
 source_sets={
-'MathGate':['Core/Arithmetic.swift','App/MathGateApp.swift','App/ContentView.swift','App/Blocker.swift','App/Preferences.swift','App/SettingsView.swift','App/ChallengeView.swift','Shared/GateState.swift'],
-'MathGatePractice':['Core/Arithmetic.swift','App/MathGateApp.swift','App/ContentView.swift','App/Blocker.swift','App/Preferences.swift','App/SettingsView.swift','App/ChallengeView.swift'],
-'MathGateMonitor':['Monitor/ActivityMonitor.swift','Shared/GateState.swift'],
+'MathGate':['Core/Arithmetic.swift','App/MathGateApp.swift','App/ContentView.swift','App/Preferences.swift','App/SettingsView.swift','App/ChallengeView.swift'],
+'MathGatePractice':['Core/Arithmetic.swift','App/MathGateApp.swift','App/ContentView.swift','App/Preferences.swift','App/SettingsView.swift','App/ChallengeView.swift'],
+'MathGateMonitor':['Monitor/ActivityMonitor.swift'],
 'MathGateShield':['Shield/ShieldConfigurationExtension.swift'],
-'MathGateAction':['Action/ShieldActionExtension.swift','Shared/GateState.swift']}
+'MathGateAction':['Action/ShieldActionExtension.swift']}
 refs={}
 for f in sorted(ROOT.rglob('*')):
     if not f.is_file() or '.xcodeproj' in str(f) or '.git' in f.parts: continue
@@ -43,7 +43,7 @@ for index,name in enumerate(names):
     files=[obj('build:'+name+f,'PBXBuildFile',fileRef=refs[f]) for f in source_sets[name]]
     phases=[obj(name+'sources','PBXSourcesBuildPhase',buildActionMask=2147483647,files=files,runOnlyForDeploymentPostprocessing=0),obj(name+'frameworks','PBXFrameworksBuildPhase',buildActionMask=2147483647,files=[],runOnlyForDeploymentPostprocessing=0),obj(name+'resources','PBXResourcesBuildPhase',buildActionMask=2147483647,files=[],runOnlyForDeploymentPostprocessing=0)]
     dependencies=[]
-    if name=='MathGate':
+    if False: # Screen Time targets are archived, not built or embedded.
         embed=[]
         for child in names[2:]:
             proxy=obj(child+'proxy','PBXContainerItemProxy',containerPortal=uid('project'),proxyType=1,remoteGlobalIDString=uid('target:'+child),remoteInfo=child)
@@ -51,13 +51,13 @@ for index,name in enumerate(names):
             embed.append(obj(child+'embed','PBXBuildFile',fileRef=uid('product:'+child),settings={'ATTRIBUTES':['RemoveHeadersOnCopy']}))
         phases.append(obj('embed','PBXCopyFilesBuildPhase',buildActionMask=2147483647,dstPath='',dstSubfolderSpec=13,files=embed,name='Embed App Extensions',runOnlyForDeploymentPostprocessing=0))
     suffix={'MathGate':'','MathGatePractice':'.practice','MathGateMonitor':'.monitor','MathGateShield':'.shield','MathGateAction':'.action'}[name]
-    settings={'PRODUCT_NAME':'$(TARGET_NAME)','PRODUCT_BUNDLE_IDENTIFIER':'com.shivanpoudel.mathgate'+suffix,'SWIFT_VERSION':'5.0','CODE_SIGN_STYLE':'Automatic','TARGETED_DEVICE_FAMILY':'1','SDKROOT':'iphoneos','SUPPORTED_PLATFORMS':'iphoneos iphonesimulator','IPHONEOS_DEPLOYMENT_TARGET':'17.0' if practice else '26.5','MARKETING_VERSION':'1.0','CURRENT_PROJECT_VERSION':'1','LD_RUNPATH_SEARCH_PATHS':['$(inherited)','@executable_path/Frameworks']}
+    settings={'PRODUCT_NAME':'$(TARGET_NAME)','PRODUCT_BUNDLE_IDENTIFIER':'com.shivanpoudel.mathgate'+suffix,'SWIFT_VERSION':'5.0','CODE_SIGN_STYLE':'Automatic','TARGETED_DEVICE_FAMILY':'1','SDKROOT':'iphoneos','SUPPORTED_PLATFORMS':'iphoneos iphonesimulator','IPHONEOS_DEPLOYMENT_TARGET':'17.0','MARKETING_VERSION':'1.0','CURRENT_PROJECT_VERSION':'1','LD_RUNPATH_SEARCH_PATHS':['$(inherited)','@executable_path/Frameworks']}
     if practice: settings['SWIFT_ACTIVE_COMPILATION_CONDITIONS']='PRACTICE'
-    else: settings['CODE_SIGN_ENTITLEMENTS']=folder+'/MathGate.entitlements'
+
     if extension:
         settings.update({'INFOPLIST_FILE':folder+'/Info.plist','APPLICATION_EXTENSION_API_ONLY':'YES','SKIP_INSTALL':'YES','LD_RUNPATH_SEARCH_PATHS':['$(inherited)','@executable_path/Frameworks','@executable_path/../../Frameworks']})
     else:
-        settings.update({'GENERATE_INFOPLIST_FILE':'YES','INFOPLIST_KEY_CFBundleDisplayName':'MathGate Practice' if practice else 'MathGate','INFOPLIST_KEY_UILaunchScreen_Generation':'YES','INFOPLIST_KEY_UIApplicationSceneManifest_Generation':'YES','INFOPLIST_KEY_UISupportedInterfaceOrientations':'UIInterfaceOrientationPortrait'})
+        settings.update({'GENERATE_INFOPLIST_FILE':'YES','INFOPLIST_KEY_CFBundleDisplayName':'MathGate','INFOPLIST_KEY_UILaunchScreen_Generation':'YES','INFOPLIST_KEY_UIApplicationSceneManifest_Generation':'YES','INFOPLIST_KEY_UISupportedInterfaceOrientations':'UIInterfaceOrientationPortrait'})
     obj('target:'+name,'PBXNativeTarget',buildConfigurationList=configs(name,settings),buildPhases=phases,buildRules=[],dependencies=dependencies,name=name,productName=name,productReference=products[index],productType='com.apple.product-type.app-extension' if extension else 'com.apple.product-type.application')
 obj('project','PBXProject',attributes={'LastUpgradeCheck':'2600','BuildIndependentTargetsInParallel':'YES','TargetAttributes':{uid('target:'+n):{'CreatedOnToolsVersion':'26.0','ProvisioningStyle':'Automatic'} for n in names}},buildConfigurationList=configs('project',{'CLANG_ENABLE_MODULES':'YES','SWIFT_VERSION':'5.0','SDKROOT':'iphoneos'}),compatibilityVersion='Xcode 14.0',developmentRegion='en',hasScannedForEncodings=0,knownRegions=['en','Base'],mainGroup=main_group,productRefGroup=product_group,projectDirPath='',projectRoot='',targets=[uid('target:'+n) for n in names])
 def encode(value,level=0):
@@ -84,4 +84,4 @@ for name in names[:2]:
     ET.SubElement(root,'ArchiveAction',buildConfiguration='Release',revealArchiveInOrganizer='YES')
     ET.indent(root)
     ET.ElementTree(root).write(schemes/(name+'.xcscheme'),encoding='utf-8',xml_declaration=True)
-print('Generated MathGate.xcodeproj with native and practice schemes.')
+print('Generated MathGate.xcodeproj: both schemes are entitlement-free timed practice.')

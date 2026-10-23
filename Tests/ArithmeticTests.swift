@@ -162,3 +162,37 @@ final class GateCountTests: XCTestCase {
         XCTAssertEqual(challenge.questions.count, 27)
     }
 }
+
+final class TimedPracticeTests: XCTestCase {
+    func testRoundDoesNotStopAtTenAnswers() {
+        var round = TimedPractice(configuration: MathConfiguration(), duration: 60)
+        for _ in 0..<25 {
+            XCTAssertTrue(round.submit(String(round.current.answer), elapsed: 10))
+        }
+        XCTAssertEqual(round.score, 25)
+    }
+    func testWrongAnswersAndDeadlineDoNotScore() {
+        var round = TimedPractice(configuration: MathConfiguration(), duration: 30)
+        let original = round.current
+        XCTAssertFalse(round.submit("", elapsed: 1))
+        XCTAssertFalse(round.submit("wrong", elapsed: 1))
+        XCTAssertEqual(round.current, original)
+        XCTAssertEqual(round.score, 0)
+        XCTAssertTrue(round.submit(String(round.current.answer), elapsed: 29.999))
+        XCTAssertFalse(round.submit(String(round.current.answer), elapsed: 30))
+        XCTAssertFalse(round.submit(String(round.current.answer), elapsed: 90))
+        XCTAssertEqual(round.score, 1)
+        XCTAssertEqual(round.remaining(at: 90), 0)
+    }
+    func testFixedRangeDoesNotHangAndConfigurationIsCaptured() {
+        var config = MathConfiguration()
+        config.operations = [.multiply]
+        config.firstFactor = NumberRange(lower: 1, upper: 1)
+        config.secondFactor = NumberRange(lower: 1, upper: 1)
+        var round = TimedPractice(configuration: config, duration: 15)
+        config.operations = [.divide]
+        for _ in 0..<20 { XCTAssertTrue(round.submit("1", elapsed: 1)) }
+        XCTAssertEqual(round.current.operation, .multiply)
+        XCTAssertEqual(round.score, 20)
+    }
+}

@@ -116,3 +116,33 @@ struct Challenge {
         return true
     }
 }
+
+// The caller supplies monotonic elapsed seconds so backgrounding cannot pause a round.
+struct TimedPractice {
+    let configuration: MathConfiguration
+    let duration: TimeInterval
+    private(set) var current: Problem
+    private(set) var score = 0
+
+    init(configuration: MathConfiguration, duration: TimeInterval) {
+        self.configuration = configuration.normalized
+        self.duration = duration.isFinite ? min(max(duration, 15), 300) : 60
+        var rng = SystemRandomNumberGenerator()
+        current = Problem.random(configuration: self.configuration, using: &rng)
+    }
+    func remaining(at elapsed: TimeInterval) -> TimeInterval {
+        max(0, duration - max(0, elapsed))
+    }
+    @discardableResult mutating func submit(_ input: String, elapsed: TimeInterval) -> Bool {
+        guard remaining(at: elapsed) > 0, Int(input) == current.answer else { return false }
+        score += 1
+        var rng = SystemRandomNumberGenerator()
+        var next = Problem.random(configuration: configuration, using: &rng)
+        for _ in 0..<8 {
+            guard next == current else { break }
+            next = Problem.random(configuration: configuration, using: &rng)
+        }
+        current = next
+        return true
+    }
+}

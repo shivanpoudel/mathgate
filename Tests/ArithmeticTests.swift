@@ -196,3 +196,12 @@ final class TimedPracticeTests: XCTestCase {
         XCTAssertEqual(round.score, 20)
     }
 }
+
+final class MinimumPracticeDurationTests: XCTestCase {
+    func testOldFifteenSecondDurationCannotCreateShortRound() {
+        let round = TimedPractice(configuration: MathConfiguration(), duration: 15)
+        XCTAssertEqual(round.duration, 30)
+        XCTAssertEqual(round.remaining(at: 15), 15)
+        XCTAssertEqual(round.remaining(at: 30), 0)
+    }
+}

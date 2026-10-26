@@ -20,8 +20,10 @@ struct ContentView: View {
                         Text("MathGate").font(.system(size: 32, weight: .bold, design: .serif))
                         Text("Solve as many as you can before time runs out.")
                             .foregroundStyle(.secondary)
+                        Text("Complete a round to earn one hour of Instagram access.")
+                            .font(.footnote).foregroundStyle(.secondary)
                         Picker("Time limit", selection: $duration) {
-                            ForEach(1...20, id: \.self) { step in
+                            ForEach(2...20, id: \.self) { step in
                                 Text("\(step * 15) seconds").tag(step * 15)
                             }
                         }
@@ -49,7 +51,8 @@ struct ContentView: View {
         }
         .tint(.primary)
         .onAppear {
-            if !(15...300).contains(duration) || duration % 15 != 0 { duration = 60 }
+            if duration == 15 { duration = 30 }
+            else if !(30...300).contains(duration) || duration % 15 != 0 { duration = 60 }
         }
         .sheet(isPresented: $showSettings) {
             SettingsView().environmentObject(preferences)

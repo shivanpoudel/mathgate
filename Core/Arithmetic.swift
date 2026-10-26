@@ -126,7 +126,7 @@ struct TimedPractice {
 
     init(configuration: MathConfiguration, duration: TimeInterval) {
         self.configuration = configuration.normalized
-        self.duration = duration.isFinite ? min(max(duration, 15), 300) : 60
+        self.duration = duration.isFinite ? min(max(duration, 30), 300) : 60
         var rng = SystemRandomNumberGenerator()
         current = Problem.random(configuration: self.configuration, using: &rng)
     }

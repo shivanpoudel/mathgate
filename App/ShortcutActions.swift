@@ -16,8 +16,8 @@ final class CompletionPassStore {
         return result
     }
     func beginRound() { update { $0.beginRound() } }
-    func finishRound(timeExpired: Bool, score: Int, interrupted: Bool) {
-        update { $0.finishRound(timeExpired: timeExpired, score: score, interrupted: interrupted) }
+    func finishRound(timeExpired: Bool, score: Int, interrupted: Bool, duration: TimeInterval) {
+        update { $0.finishRound(timeExpired: timeExpired, score: score, interrupted: interrupted, duration: duration) }
     }
     func checkAccess() -> Bool { update { $0.checkAccess() } }
     func appClosed() { update { $0.appClosed() } }
@@ -25,7 +25,7 @@ final class CompletionPassStore {
 
 struct CheckInstagramAccess: AppIntent {
     static var title: LocalizedStringResource = "Check Instagram Access"
-    static var description = IntentDescription("Returns Yes only after an uninterrupted MathGate round with at least one correct answer. Use in Instagram's Is Opened automation before deciding whether to open MathGate.")
+    static var description = IntentDescription("Returns Yes for one hour after an uninterrupted MathGate round of at least 30 seconds with a positive score. Use in Instagram's Is Opened automation before deciding whether to open MathGate.")
     static var openAppWhenRun: Bool = false
 
     @MainActor
@@ -36,7 +36,7 @@ struct CheckInstagramAccess: AppIntent {
 
 struct EndInstagramVisit: AppIntent {
     static var title: LocalizedStringResource = "End Instagram Visit"
-    static var description = IntentDescription("Clears the current Instagram visit. Use only in Instagram's Is Closed automation. Never grants access and never opens MathGate.")
+    static var description = IntentDescription("Compatibility action. Does nothing: access now lasts one hour, including when you leave Instagram. You can delete the Is Closed automation.")
     static var openAppWhenRun: Bool = false
 
     @MainActor

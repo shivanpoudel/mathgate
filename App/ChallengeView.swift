@@ -34,7 +34,7 @@ struct ChallengeView: View {
                             Text("in \(Int(round.duration)) seconds").foregroundStyle(.secondary)
                         }
                         Text(earnedPass
-                             ? "Round complete. You can return to Instagram."
+                             ? "Round complete. Instagram access is available for one hour."
                              : (interrupted ? "Stay in MathGate for the full round to earn access." : "Answer at least one question correctly to earn access."))
                             .font(.footnote).foregroundStyle(.secondary)
                         Button("Try again") { restart() }
@@ -108,7 +108,7 @@ struct ChallengeView: View {
         guard !finished else { return }
         earnedPass = !interrupted && scenePhase == .active && round.score > 0
         CompletionPassStore.shared.finishRound(timeExpired: round.remaining(at: elapsed) == 0,
-                                               score: round.score, interrupted: !earnedPass)
+                                               score: round.score, interrupted: !earnedPass, duration: round.duration)
         finished = true; focused = false; secondsLeft = 0
     }
     private func restart() {
